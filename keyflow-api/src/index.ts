@@ -107,8 +107,8 @@ app.post("/keys/verify", async (c) => {
 	});
 	const body = await c.req.json<VerifyKeyRequest>();
 
-	if (!body.key || !body.apiId) {
-		return c.json({ error: "key and apiId are required" }, 400);
+	if (!body.key) {
+		return c.json({ error: "key is required" }, 400);
 	}
 
 	const keyId = await redis.get<string>(`lookup:${body.key}`);
@@ -127,7 +127,7 @@ app.post("/keys/verify", async (c) => {
 		createdAt: number;
 	};
 
-	if (keyData.apiId !== body.apiId) {
+	if (keyData.apiId !== body.apiId || keyData.key !== body.key) {
 		return c.json<VerifyKeyResponse>({ valid: false });
 	}
 

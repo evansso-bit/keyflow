@@ -8,7 +8,6 @@ import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner";
 import { useActionState, useEffect, useState } from "react";
 import { createApiKey } from "@/actions/create-apiKey";
-import { CopyIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 
@@ -59,29 +58,31 @@ export function CreateApiKey() {
                 <CardDescription>
                     Create a new API key to use with the Keyflow API.
                 </CardDescription>
-               
+
             </CardHeader>
 
             <CardContent>
                 <form action={formAction}>
-                <div className="flex flex-row gap-3  items-center">
-                    <div className="flex flex-row gap-3  rounded-lg">
-                        <Input
-                            value={"https://keys.mpesaflow.com/keys/create"}
-                            readOnly
-                            className=" border-none w-fit "
-                        />
-                        
+                    <div className="flex flex-row gap-3  items-center">
+                        <div className="flex flex-row gap-3 h-fit rounded-lg">
+                            <div className="px-1 py-0.5 bg-gray-500 text-white rounded-md">POST</div>
+                            <div className="w-[1px] bg-gray-500 h-full" />
+                            <Input
+                                value={"https://keys.mpesaflow.com/keys/create"}
+                                readOnly
+                                className=" border-none w-fit "
+                            />
+
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
+                            <Switch
+                                id="use-example-data"
+                                checked={useExampleData}
+                                onCheckedChange={setUseExampleData}
+                            />
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                        <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
-                        <Switch
-                            id="use-example-data"
-                            checked={useExampleData}
-                            onCheckedChange={setUseExampleData}
-                        />
-                    </div>
-                </div>
                     {useExampleData ? (
                         <pre className="bg-gray-100 p-4 h-[250px] overflow-y-auto rounded overflow-auto">
                             {JSON.stringify(exampleData, null, 2)}
@@ -101,12 +102,12 @@ export function CreateApiKey() {
                         </div>
                     )}
 
-                    
+
                 </form>
             </CardContent>
             <CardFooter className="">
                 {pending ? (
-                    <pre  className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
+                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
                         {"Creating API Key..."}
                     </pre>
                 ) : (
