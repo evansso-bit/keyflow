@@ -66,7 +66,7 @@ export function CreateApiKey() {
                 <form action={formAction}>
                     <div className="flex flex-row gap-3  items-center">
                         <div className="flex flex-row gap-3 h-fit rounded-lg">
-                            <div className="px-1 py-0.5 text-sm bg-gray-500 h-fit text-white rounded-md">POST</div>
+                            <div className="px-1 py-0.5 text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator orientation="vertical" />
                             <Input
                                 value={"https://keys.mpesaflow.com/keys/create"}

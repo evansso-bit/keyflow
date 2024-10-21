@@ -9,12 +9,13 @@ import { toast } from "sonner";
 import { useActionState, useEffect } from "react";
 import { verifyApiKeyAction } from "@/actions/verify-apiKey";
 import { Separator } from "@/components/ui/separator";
-
+import { useState } from "react";
 
 
 
 export function VerifyApiKey() {
     const [state, formAction, pending] = useActionState(verifyApiKeyAction, null);
+    const [key, setKey] = useState("");
 
 
     useEffect(() => {
@@ -41,7 +42,7 @@ export function VerifyApiKey() {
                 <form action={formAction}>
 
                     <div className="flex flex-row gap-3 h-fit rounded-lg items-center">
-                        <div className="px-1 text-sm h-fit py-0.5 bg-gray-500 text-white rounded">
+                        <div className="px-1 text-xs h-fit py-0.5 bg-gray-500 text-white rounded">
                             POST
                         </div>
                         <Separator orientation="vertical" />
@@ -52,16 +53,17 @@ export function VerifyApiKey() {
                         />
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 items-start">
                         <Label htmlFor="custom-data">API Key</Label>
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-row gap-2 items-center">
                             <Input
                                 id="custom-data"
                                 name="key"
                                 placeholder="Enter your API key here"
-
+                                value={key}
+                                onChange={({ target }) => setKey(target.value)}
                             />
-                            <Button disabled={pending} size={'sm'} className="justify-start mt-5 w-fit" type="submit">
+                            <Button disabled={pending || !key || key === ""} size={'sm'} className="justify-start mt-5 w-fit" type="submit">
                                 {pending ? "Verifying..." : "Verify API Key"}
                             </Button>
                         </div>
@@ -72,7 +74,7 @@ export function VerifyApiKey() {
             </CardContent>
             <CardFooter className="">
                 {pending ? (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center">
+                    <pre className="bg-gray-100 rounded overflow-auto w-full text-center">
                         <Skeleton className="w-full h-20" />
                     </pre>
                 ) : (
