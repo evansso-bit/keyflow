@@ -12,9 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 
 
-
 export function VerifyApiKey() {
-    const [state, formAction, pending] = useActionState(verifyApiKeyAction, null);
+    const [state, formAction, pending] = useActionState(verifyApiKeyAction, undefined);
     const [key, setKey] = useState("");
 
 
