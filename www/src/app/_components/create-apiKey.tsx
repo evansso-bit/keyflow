@@ -53,7 +53,7 @@ export function CreateApiKey() {
 
 
     return (
-        <Card className="max-w-3xl w-full h-fit mx-auto">
+        <Card className="lg:max-w-3xl w-full h-fit mx-auto">
             <CardHeader>
                 <CardTitle>Create API Key</CardTitle>
                 <CardDescription>
@@ -64,11 +64,11 @@ export function CreateApiKey() {
 
             <CardContent>
                 <form action={formAction}>
-                    <div className="flex flex-row gap-3  items-center">
-                        <div className="flex flex-row gap-3 h-fit rounded-lg">
+                    <div className="flex flex-col lg:flex-row gap-3  items-center">
+                        <div className="flex flex-row gap-3 h-fit w-full rounded-lg">
                             <div className="px-1 py-0.5 text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator orientation="vertical" />
-                            <h1 className="text-sm">https://keys.mpesaflow.com/keys/create</h1>
+                            <h1 className="text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
 
                         </div>
                         <div className="flex flex-col gap-1">

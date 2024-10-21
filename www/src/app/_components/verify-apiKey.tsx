@@ -28,7 +28,7 @@ export function VerifyApiKey() {
 
 
     return (
-        <Card className="max-w-3xl w-full h-fit mx-auto">
+        <Card className="lg:max-w-3xl w-full h-fit mx-auto">
             <CardHeader>
                 <CardTitle>Verify API Key</CardTitle>
                 <CardDescription>
@@ -40,19 +40,19 @@ export function VerifyApiKey() {
             <CardContent>
                 <form action={formAction} className="flex flex-col gap-4">
 
-                    <div className="flex flex-row gap-3 h-fit rounded-lg items-center">
+                    <div className="flex flex-row gap-3 h-fit w-full rounded-lg items-center">
                         <div className="px-1 text-xs h-fit py-0.5 bg-gray-500 text-white rounded">
                             POST
                         </div>
                         <Separator orientation="vertical" />
-                        <h1>
+                        <h1 className="text-sm w-fit">
                             https://keys.mpesaflow.com/keys/verify
                         </h1>
                     </div>
 
                     <div className="flex flex-col gap-2 items-start">
                         <Label htmlFor="custom-data">API Key</Label>
-                        <div className="flex flex-row gap-2 items-center">
+                        <div className="flex flex-row gap-2 w-full items-center">
                             <Input
                                 id="custom-data"
                                 name="key"
