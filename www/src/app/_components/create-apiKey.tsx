@@ -64,7 +64,7 @@ export function CreateApiKey() {
                         <Input
                             value={"https://keys.mpesaflow.com/keys/create"}
                             readOnly
-                            className="bg-black w-fit"
+                            className="bg-gray-300 border-none w-fit "
                         />
 
                         <Button variant={"outline"} size={"icon"} onClick={async () => {
