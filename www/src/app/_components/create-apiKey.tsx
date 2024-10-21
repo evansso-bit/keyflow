@@ -52,7 +52,7 @@ export function CreateApiKey() {
 
 
     return (
-        <Card className="max-w-3xl w-full mx-auto">
+        <Card className="max-w-3xl w-full h-fit mx-auto">
             <CardHeader>
                 <CardTitle>Create API Key</CardTitle>
                 <CardDescription>
@@ -111,7 +111,7 @@ export function CreateApiKey() {
                         {"Creating API Key..."}
                     </pre>
                 ) : (
-                    <pre className="px-10 border-dashed border-2 border-gray-500 rounded overflow-auto w-full py-20">
+                    <pre className="px-10 border-dashed border-2 border-gray-300 rounded-lg overflow-auto w-full py-20">
                         {state?.data.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
