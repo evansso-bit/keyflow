@@ -40,10 +40,10 @@ export function VerifyApiKey() {
                 <form action={formAction}>
 
                     <div className="flex flex-row gap-3 h-fit rounded-lg">
-                        <div className="px-1 py-0.5 bg-gray-500 text-white rounded-md">
+                        <div className="px-1 h-fit py-0.5 bg-gray-500 text-white rounded">
                             POST
                         </div>
-                        <div className="w-[1px] bg-gray-500 h-full" />
+                        <div className="w-[3px] bg-gray-500 h-full" />
                         <Input
                             value={"https://keys.mpesaflow.com/keys/verify"}
                             readOnly
@@ -78,8 +78,8 @@ export function VerifyApiKey() {
                         <Skeleton className="w-full h-20" />
                     </pre>
                 ) : (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
-                        {state?.valid === false || !state?.valid ? "Results will be shown here" : JSON.stringify(state?.valid, null, 2)}
+                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full  py-20">
+                        {!state?.valid ? "Results will be shown here" : JSON.stringify(state?.valid, null, 2)}
                     </pre>
                 )}
             </CardFooter>

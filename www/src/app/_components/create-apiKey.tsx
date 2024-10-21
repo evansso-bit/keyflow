@@ -65,8 +65,8 @@ export function CreateApiKey() {
                 <form action={formAction}>
                     <div className="flex flex-row gap-3  items-center">
                         <div className="flex flex-row gap-3 h-fit rounded-lg">
-                            <div className="px-1 py-0.5 bg-gray-500 text-white rounded-md">POST</div>
-                            <div className="w-[1px] bg-gray-500 h-full" />
+                            <div className="px-1 py-0.5 bg-gray-500 h-fit text-white rounded-md">POST</div>
+                            <div className="w-[3px] bg-gray-500 h-full" />
                             <Input
                                 value={"https://keys.mpesaflow.com/keys/create"}
                                 readOnly
@@ -111,7 +111,7 @@ export function CreateApiKey() {
                         {"Creating API Key..."}
                     </pre>
                 ) : (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
+                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full py-20">
                         {state?.data.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
