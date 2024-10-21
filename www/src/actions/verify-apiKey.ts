@@ -17,7 +17,7 @@ export async function verifyApiKeyAction(prevState: any, formData: FormData) {
 	} catch (error) {
 		return {
 			valid: false,
-			error: "An error occurred while verifying the API key",
+			error: error,
 		};
 	}
 }

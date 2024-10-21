@@ -43,7 +43,6 @@ type CreateKeyResponse = {
 
 type VerifyKeyRequest = {
 	key: string;
-	apiId: string;
 };
 
 type VerifyKeyResponse = {
@@ -126,10 +125,6 @@ app.post("/keys/verify", async (c) => {
 		keyId: string;
 		createdAt: number;
 	};
-
-	if (keyData.apiId !== body.apiId || keyData.key !== body.key) {
-		return c.json<VerifyKeyResponse>({ valid: false });
-	}
 
 	if (keyData.expires && keyData.expires < Date.now()) {
 		await redis.del(`key:${keyId}`);

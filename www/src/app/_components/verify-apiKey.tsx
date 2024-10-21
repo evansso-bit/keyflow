@@ -23,7 +23,7 @@ export function VerifyApiKey() {
         if ("message" in state) {
             toast(state.message)
         } else {
-            toast.error("state.error")
+            toast.error(state.error)
         }
     }, [state])
 
@@ -39,18 +39,16 @@ export function VerifyApiKey() {
             </CardHeader>
 
             <CardContent>
-                <form action={formAction}>
+                <form action={formAction} className="flex flex-col gap-4">
 
                     <div className="flex flex-row gap-3 h-fit rounded-lg items-center">
                         <div className="px-1 text-xs h-fit py-0.5 bg-gray-500 text-white rounded">
                             POST
                         </div>
                         <Separator orientation="vertical" />
-                        <Input
-                            value={"https://keys.mpesaflow.com/keys/verify"}
-                            readOnly
-                            className=" border-none w-fit "
-                        />
+                        <h1>
+                            https://keys.mpesaflow.com/keys/verify
+                        </h1>
                     </div>
 
                     <div className="flex flex-col gap-2 items-start">
