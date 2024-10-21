@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useActionState, useEffect, useState } from "react";
 import { createApiKey } from "@/actions/create-apiKey";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@radix-ui/react-separator";
 
 
 const exampleData = {
@@ -65,8 +66,8 @@ export function CreateApiKey() {
                 <form action={formAction}>
                     <div className="flex flex-row gap-3  items-center">
                         <div className="flex flex-row gap-3 h-fit rounded-lg">
-                            <div className="px-1 py-0.5 bg-gray-500 h-fit text-white rounded-md">POST</div>
-                            <div className="w-[3px] bg-gray-500 h-full" />
+                            <div className="px-1 py-0.5 text-sm bg-gray-500 h-fit text-white rounded-md">POST</div>
+                            <Separator orientation="vertical" />
                             <Input
                                 value={"https://keys.mpesaflow.com/keys/create"}
                                 readOnly
