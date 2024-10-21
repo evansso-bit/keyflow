@@ -1,0 +1,21 @@
+{
+	"name": "mpesaflow-api-key-engine",
+	"module": "src/index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"scripts": {
+		"start": "bun run src/index.ts",
+		"dev": "bun run src/index.ts --watch",
+		"deploy": "wrangler deploy --minify src/index.ts"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@upstash/redis": "^1.34.3",
+		"hono": "^4.6.5",
+		"wrangler": "^3.81.0"
+	}
+}
