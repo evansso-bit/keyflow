@@ -68,11 +68,7 @@ export function CreateApiKey() {
                         <div className="flex flex-row gap-3 h-fit rounded-lg">
                             <div className="px-1 py-0.5 text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator orientation="vertical" />
-                            <Input
-                                value={"https://keys.mpesaflow.com/keys/create"}
-                                readOnly
-                                className=" border-none w-fit "
-                            />
+                            <h1 className="text-sm">https://keys.mpesaflow.com/keys/create</h1>
 
                         </div>
                         <div className="flex flex-col gap-1">

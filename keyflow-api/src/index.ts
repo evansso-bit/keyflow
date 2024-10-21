@@ -91,8 +91,9 @@ app.post("/keys/create", async (c) => {
 		createdAt: Date.now(),
 	};
 
+	// Encode the key before storing
 	await redis.set(`key:${keyId}`, JSON.stringify(keyData));
-	await redis.set(`lookup:${key}`, keyId);
+	await redis.set(`lookup:${encodeURIComponent(key)}`, keyId);
 
 	return c.json<CreateKeyResponse>({ key, keyId });
 });
@@ -104,53 +105,61 @@ app.post("/keys/verify", async (c) => {
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,
 	});
-	const body = await c.req.json<VerifyKeyRequest>();
+	try {
+		const body = await c.req.json<VerifyKeyRequest>();
 
-	if (!body.key) {
-		return c.json({ error: "key is required" }, 400);
-	}
+		if (!body.key) {
+			return c.json({ error: "key is required" }, 400);
+		}
 
-	const keyId = await redis.get<string>(`lookup:${body.key}`);
-	if (!keyId) {
-		return c.json<VerifyKeyResponse>({ valid: false });
-	}
+		// Encode the key before retrieving
+		const keyId = await redis.get<string>(
+			`lookup:${encodeURIComponent(body.key)}`
+		);
+		if (!keyId) {
+			return c.json<VerifyKeyResponse>({ valid: false });
+		}
 
-	const keyDataString = await redis.get<string>(`key:${keyId}`);
-	if (!keyDataString) {
-		return c.json<VerifyKeyResponse>({ valid: false });
-	}
+		const keyDataString = await redis.get<string>(`key:${keyId}`);
+		if (!keyDataString) {
+			return c.json<VerifyKeyResponse>({ valid: false });
+		}
 
-	const keyData = JSON.parse(keyDataString) as CreateKeyRequest & {
-		key: string;
-		keyId: string;
-		createdAt: number;
-	};
-
-	if (keyData.expires && keyData.expires < Date.now()) {
-		await redis.del(`key:${keyId}`);
-		await redis.del(`lookup:${body.key}`);
-		return c.json<VerifyKeyResponse>({ valid: false });
-	}
-
-	// Implement rate limiting logic here if needed
-
-	const response: VerifyKeyResponse = {
-		valid: true,
-		ownerId: keyData.ownerId,
-		meta: keyData.meta,
-		expires: keyData.expires,
-	};
-
-	if (keyData.ratelimit) {
-		// Implement rate limit checking and updating here
-		response.ratelimit = {
-			limit: keyData.ratelimit.limit,
-			remaining: keyData.ratelimit.limit, // This should be updated based on actual usage
-			reset: Date.now() + keyData.ratelimit.refillInterval,
+		const keyData = JSON.parse(keyDataString) as CreateKeyRequest & {
+			key: string;
+			keyId: string;
+			createdAt: number;
 		};
-	}
 
-	return c.json(response);
+		if (keyData.expires && keyData.expires < Date.now()) {
+			await redis.del(`key:${keyId}`);
+			await redis.del(`lookup:${encodeURIComponent(body.key)}`);
+			return c.json<VerifyKeyResponse>({ valid: false });
+		}
+
+		// Implement rate limiting logic here if needed
+
+		const response: VerifyKeyResponse = {
+			valid: true,
+			ownerId: keyData.ownerId,
+			meta: keyData.meta,
+			expires: keyData.expires,
+		};
+
+		if (keyData.ratelimit) {
+			// Implement rate limit checking and updating here
+			response.ratelimit = {
+				limit: keyData.ratelimit.limit,
+				remaining: keyData.ratelimit.limit, // This should be updated based on actual usage
+				reset: Date.now() + keyData.ratelimit.refillInterval,
+			};
+		}
+
+		return c.json(response);
+	} catch (error) {
+		// Return a JSON error response
+		return c.json({ error: `Internal Server Error: ${error}` }, 500);
+	}
 });
 
 export default app;
