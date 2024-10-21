@@ -60,14 +60,14 @@ export function CreateApiKey() {
                     Create a new API key to use with the Keyflow API.
                 </CardDescription>
                 <div className="flex flex-row gap-3  items-center">
-                    <div className="flex flex-row gap-3 bg-black rounded-lg">
+                    <div className="flex flex-row gap-3 bg-gray-300 rounded-lg">
                         <Input
                             value={"https://keys.mpesaflow.com/keys/create"}
                             readOnly
                             className="bg-gray-300 border-none w-fit "
                         />
 
-                        <Button variant={"outline"} size={"icon"} onClick={async () => {
+                        <Button className="bg-gray-300 border-none" variant={"outline"} size={"icon"} onClick={async () => {
                             await navigator.clipboard.writeText("https://keys.mpesaflow.com/keys/create");
                             toast.success("URL copied to clipboard");
 
@@ -75,7 +75,7 @@ export function CreateApiKey() {
                             <CopyIcon className="w-4 h-4" />
                         </Button>
                     </div>
-                    <div className="flex items-center mb-4">
+                    <div className="flex flex-col gap-1">
                         <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
                         <Switch
                             id="use-example-data"

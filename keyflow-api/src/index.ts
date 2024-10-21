@@ -80,9 +80,7 @@ app.post("/keys/create", async (c) => {
 	});
 	const body = await c.req.json<CreateKeyRequest>();
 
-	if (!body.apiId) {
-		return c.json({ error: "apiId is required" }, 400);
-	}
+	const apiId = body.apiId || crypto.randomUUID();
 
 	const keyId = crypto.randomUUID();
 	const key = generateApiKey(body.prefix, body.byteLength || 16);

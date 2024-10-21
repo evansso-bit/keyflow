@@ -11,7 +11,7 @@ export async function createApiKey(prevState: any, formData: FormData) {
 			"https://mpesaflow-api-key-engine.marsappollo3.workers.dev/keys/create",
 			{
 				method: "POST",
-				body: JSON.stringify(customData),
+				body: JSON.stringify(JSON.parse(customData as string)),
 			}
 		).then((res) => res.json());
 
