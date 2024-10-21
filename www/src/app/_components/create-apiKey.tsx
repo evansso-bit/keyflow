@@ -53,27 +53,25 @@ export function CreateApiKey() {
 
 
     return (
-        <Card>
+        <Card className="max-w-3xl w-full mx-auto">
             <CardHeader>
                 <CardTitle>Create API Key</CardTitle>
                 <CardDescription>
                     Create a new API key to use with the Keyflow API.
                 </CardDescription>
+               
+            </CardHeader>
+
+            <CardContent>
+                <form action={formAction}>
                 <div className="flex flex-row gap-3  items-center">
-                    <div className="flex flex-row gap-3 bg-gray-300 rounded-lg">
+                    <div className="flex flex-row gap-3  rounded-lg">
                         <Input
                             value={"https://keys.mpesaflow.com/keys/create"}
                             readOnly
-                            className="bg-gray-300 border-none w-fit "
+                            className=" border-none w-fit "
                         />
-
-                        <Button className="bg-gray-300 border-none" variant={"outline"} size={"icon"} onClick={async () => {
-                            await navigator.clipboard.writeText("https://keys.mpesaflow.com/keys/create");
-                            toast.success("URL copied to clipboard");
-
-                        }}>
-                            <CopyIcon className="w-4 h-4" />
-                        </Button>
+                        
                     </div>
                     <div className="flex flex-col gap-1">
                         <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
@@ -84,17 +82,12 @@ export function CreateApiKey() {
                         />
                     </div>
                 </div>
-            </CardHeader>
-
-            <CardContent>
-                <form action={formAction}>
-
                     {useExampleData ? (
-                        <pre className="bg-gray-100 p-4 rounded overflow-auto">
+                        <pre className="bg-gray-100 p-4 h-[250px] overflow-y-auto rounded overflow-auto">
                             {JSON.stringify(exampleData, null, 2)}
                         </pre>
                     ) : (
-                        <div className="flex flex-col space-y-1.5">
+                        <div className="flex flex-col space-y-1.5 w-full">
                             <Label htmlFor="custom-data">Custom Data (JSON format)</Label>
                             <Textarea
                                 id="custom-data"
@@ -104,20 +97,21 @@ export function CreateApiKey() {
                                 placeholder="Enter your custom JSON data here"
                                 rows={10}
                             />
+                            <Button size={'sm'} className="justify-start mt-5 w-fit" type="submit">Create API Key</Button>
                         </div>
                     )}
 
-                    <Button type="submit">Create API Key</Button>
+                    
                 </form>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="">
                 {pending ? (
-                    <pre>
+                    <pre  className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
                         {"Creating API Key..."}
                     </pre>
                 ) : (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto">
-                        {JSON.stringify(state?.data, null, 2)}
+                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
+                        {state?.data.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
             </CardFooter>

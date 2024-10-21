@@ -27,7 +27,7 @@ export function MainNav() {
                 <div className="flex items-center space-x-4">
                     <div className="text-sm">Served Requests: {requests.toLocaleString()}</div>
                     <Button asChild variant="outline" size="sm">
-                        <a href="https://github.com/yourusername/keyflow" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com/evansso-bit/keyflow" target="_blank" rel="noopener noreferrer">
                             <GithubIcon className="w-4 h-4 mr-2" />
                             Star on GitHub
                             <span className="ml-2 bg-primary/10 px-2 py-1 rounded-full text-xs">{stars}</span>
