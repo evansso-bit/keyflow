@@ -59,24 +59,22 @@ export function CreateApiKey() {
                 <CardDescription>
                     Create a new API key to use with the Keyflow API.
                 </CardDescription>
-                <div className="flex flex-row gap-3 bg-black rounded-lg">
-                    <Input
-                        value={"https://keys.mpesaflow.com/keys/create"}
-                        readOnly
-                    />
-                    { }
-                    <Button variant={"outline"} size={"icon"} onClick={async () => {
-                        await navigator.clipboard.writeText("https://keys.mpesaflow.com/keys/create");
-                        toast.success("URL copied to clipboard");
+                <div className="flex flex-row gap-3  items-center">
+                    <div className="flex flex-row gap-3 bg-black rounded-lg">
+                        <Input
+                            value={"https://keys.mpesaflow.com/keys/create"}
+                            readOnly
+                            className="bg-black w-fit"
+                        />
 
-                    }}>
-                        <CopyIcon className="w-4 h-4" />
-                    </Button>
-                </div>
-            </CardHeader>
+                        <Button variant={"outline"} size={"icon"} onClick={async () => {
+                            await navigator.clipboard.writeText("https://keys.mpesaflow.com/keys/create");
+                            toast.success("URL copied to clipboard");
 
-            <CardContent>
-                <form action={formAction}>
+                        }}>
+                            <CopyIcon className="w-4 h-4" />
+                        </Button>
+                    </div>
                     <div className="flex items-center mb-4">
                         <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
                         <Switch
@@ -85,6 +83,12 @@ export function CreateApiKey() {
                             onCheckedChange={setUseExampleData}
                         />
                     </div>
+                </div>
+            </CardHeader>
+
+            <CardContent>
+                <form action={formAction}>
+
                     {useExampleData ? (
                         <pre className="bg-gray-100 p-4 rounded overflow-auto">
                             {JSON.stringify(exampleData, null, 2)}

@@ -6,7 +6,8 @@ import { formSchema } from "@/lib/zod";
 export async function createApiKey(prevState: any, formData: FormData) {
 	try {
 		const data = Object.fromEntries(formData.entries());
-		const parsed = formSchema.safeParse(data);
+		const customData = formData.get("custom-data");
+		const parsed = formSchema.safeParse(data || customData);
 
 		if (!parsed.success) {
 			return {
