@@ -78,8 +78,8 @@ export function VerifyApiKey() {
                         <Skeleton className="w-full h-20" />
                     </pre>
                 ) : (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full  py-20">
-                        {!state?.valid ? "Results will be shown here" : JSON.stringify(state?.valid, null, 2)}
+                    <pre className="px-10 border-dashed border-2 border-gray-500 rounded overflow-auto w-full  py-20">
+                        {state?.data.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
             </CardFooter>

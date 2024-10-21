@@ -11,7 +11,7 @@ export async function verifyApiKeyAction(prevState: any, formData: FormData) {
 		}).then((res) => res.json());
 
 		return {
-			valid: response.valid,
+			data: response,
 			message: response.valid === false ? "Invalid API key" : "Valid API key",
 		};
 	} catch (error) {
