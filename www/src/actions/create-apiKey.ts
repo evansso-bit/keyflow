@@ -60,6 +60,9 @@ export async function createApiKey(prevState: any, formData: FormData) {
 
 		const postData = await fetch("https://keys.mpesaflow.com/keys/create", {
 			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
 			body: JSON.stringify(data),
 		}).then((res) => res.json());
 
