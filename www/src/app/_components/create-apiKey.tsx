@@ -188,7 +188,7 @@ export function CreateApiKey() {
                     </pre>
                 ) : (
                     <pre className="px-10 border-dashed border-2 border-gray-300 rounded-lg overflow-auto w-full py-20">
-                        {state?.data.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
+                        {state?.data?.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
             </CardFooter>
