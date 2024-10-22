@@ -58,13 +58,10 @@ export async function createApiKey(prevState: any, formData: FormData) {
 			};
 		}
 
-		const postData = await fetch(
-			"https://mpesaflow-api-key-engine.marsappollo3.workers.dev/keys/create",
-			{
-				method: "POST",
-				body: JSON.stringify(data),
-			}
-		).then((res) => res.json());
+		const postData = await fetch("https://keys.mpesaflow.com/keys/create", {
+			method: "POST",
+			body: JSON.stringify(data),
+		}).then((res) => res.json());
 
 		return {
 			data: postData,

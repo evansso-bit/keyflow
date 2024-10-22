@@ -92,71 +92,175 @@ app.post("/keys/create", async (c) => {
 	};
 
 	// Encode the key before storing
+	const encodedKey = encodeURIComponent(key);
 	await redis.set(`key:${keyId}`, JSON.stringify(keyData));
-	await redis.set(`lookup:${encodeURIComponent(key)}`, keyId);
+	await redis.set(`lookup:${encodedKey}`, keyId);
 
 	return c.json<CreateKeyResponse>({ key, keyId });
 });
 
-// Verify API Key endpoint
+// Add request body validation
+function isValidVerifyKeyRequest(body: unknown): body is VerifyKeyRequest {
+	return (
+		typeof body === "object" &&
+		body !== null &&
+		"key" in body &&
+		typeof (body as any).key === "string"
+	);
+}
+// Verify API Key endpoint with enhanced error handling
 app.post("/keys/verify", async (c) => {
 	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,
 	});
-	try {
-		const body = await c.req.json<VerifyKeyRequest>();
 
-		if (!body.key) {
-			return c.json({ error: "key is required" }, 400);
+	try {
+		// Log the raw request body for debugging
+		const rawBody = await c.req.text();
+		console.log("Raw request body:", rawBody);
+
+		// Attempt to parse JSON
+		let body: unknown;
+		try {
+			body = JSON.parse(rawBody);
+		} catch (parseError) {
+			console.error("JSON Parse Error:", parseError);
+			return c.json(
+				{
+					error: "Invalid JSON in request body",
+					details:
+						parseError instanceof Error
+							? parseError.message
+							: "Unknown parse error",
+					receivedBody: rawBody,
+				},
+				400
+			);
 		}
 
-		// Directly use the key without encoding
-		const keyId = await redis.get<string>(`lookup:${body.key}`);
+		// Validate the parsed body
+		if (!isValidVerifyKeyRequest(body)) {
+			return c.json(
+				{
+					error: "Invalid request format",
+					details: "Request must include a 'key' field of type string",
+					receivedBody: body,
+				},
+				400
+			);
+		}
+
+		console.log("Parsed and validated body:", body);
+
+		// Encode the key for Redis lookup
+		const encodedKey = encodeURIComponent(body.key);
+		console.log("Encoded key:", encodedKey);
+
+		// Attempt Redis lookup
+		let keyId: string | null;
+		try {
+			keyId = await redis.get<string>(`lookup:${encodedKey}`);
+			console.log("Redis lookup result:", keyId);
+		} catch (redisError) {
+			console.error("Redis lookup error:", redisError);
+			return c.json(
+				{
+					error: "Redis lookup failed",
+					details:
+						redisError instanceof Error
+							? redisError.message
+							: "Unknown Redis error",
+					valid: false,
+				},
+				500
+			);
+		}
+
 		if (!keyId) {
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
 
-		const keyDataString = await redis.get<string>(`key:${keyId}`);
+		// Fetch key data
+		let keyDataString: string | null;
+		try {
+			keyDataString = await redis.get<string>(`key:${keyId}`);
+			console.log("Key data string:", keyDataString);
+		} catch (redisError) {
+			console.error("Redis key data fetch error:", redisError);
+			return c.json(
+				{
+					error: "Failed to fetch key data",
+					details:
+						redisError instanceof Error
+							? redisError.message
+							: "Unknown Redis error",
+					valid: false,
+				},
+				500
+			);
+		}
+
 		if (!keyDataString) {
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
 
-		const keyData = JSON.parse(keyDataString) as CreateKeyRequest & {
+		// Parse key data
+		let keyData: CreateKeyRequest & {
 			key: string;
 			keyId: string;
 			createdAt: number;
 		};
+		try {
+			keyData = JSON.parse(keyDataString);
+		} catch (parseError) {
+			console.error("Key data parse error:", parseError);
+			return c.json(
+				{
+					error: "Invalid key data in storage",
+					details:
+						parseError instanceof Error
+							? parseError.message
+							: "Unknown parse error",
+					valid: false,
+				},
+				500
+			);
+		}
 
 		if (keyData.expires && keyData.expires < Date.now()) {
-			await redis.del(`key:${keyId}`);
-			await redis.del(`lookup:${body.key}`);
+			await Promise.all([
+				redis.del(`key:${keyId}`),
+				redis.del(`lookup:${encodedKey}`),
+			]);
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
 
-		// Remove ownerId and apiId from the response
-		const { ownerId, apiId, ...responseData } = keyData;
-
 		const response: VerifyKeyResponse = {
 			valid: true,
-			meta: responseData.meta,
-			expires: responseData.expires,
+			ownerId: keyData.ownerId,
+			meta: keyData.meta,
+			expires: keyData.expires,
 		};
 
-		if (responseData.ratelimit) {
+		if (keyData.ratelimit) {
 			response.ratelimit = {
-				limit: responseData.ratelimit.limit,
-				remaining: responseData.ratelimit.limit, // This should be updated based on actual usage
-				reset: Date.now() + responseData.ratelimit.refillInterval,
+				limit: keyData.ratelimit.limit,
+				remaining: keyData.ratelimit.limit,
+				reset: Date.now() + keyData.ratelimit.refillInterval,
 			};
 		}
 
 		return c.json(response);
 	} catch (error) {
-		console.error("Error in /keys/verify:", error);
+		console.error("Unexpected error in /keys/verify:", error);
 		return c.json(
-			{ error: `Internal Server Error: ${error?.toString()}` },
+			{
+				error: "Internal Server Error",
+				details: error instanceof Error ? error.message : "Unknown error",
+				valid: false,
+			},
 			500
 		);
 	}
