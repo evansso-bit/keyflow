@@ -10,7 +10,7 @@ import { useActionState, useEffect, useState } from "react";
 import { createApiKey } from "@/actions/create-apiKey";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@radix-ui/react-separator";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const exampleData = {
     apiId: "api_123",
@@ -39,17 +39,29 @@ const exampleData = {
 
 export function CreateApiKey() {
     const [state, formAction, pending] = useActionState(createApiKey, null);
-    const [useExampleData, setUseExampleData] = useState(false);
-    const [customData, setCustomData] = useState('')
+    const [name, setName] = useState('');
+    const [prefix, setPrefix] = useState('');
+    const [expiration, setExpiration] = useState('');
+    const [rateLimit, setRateLimit] = useState('');
+    const [enableRateLimit, setEnableRateLimit] = useState(false);
+    const [customData, setCustomData] = useState('');
 
     useEffect(() => {
-        if (!state) return
-        if ("message" in state) {
-            toast.success(state.message)
+        if (state && 'message' in state) {
+            toast.success(state.message);
         } else {
-            toast.error("Failed to create API key")
+            toast.error("Failed to create API key");
         }
-    }, [state])
+    }, [state]);
+    const formatCustomData = () => {
+        try {
+            const parsed = JSON.parse(customData);
+            setCustomData(JSON.stringify(parsed, null, 2));
+            toast.success("JSON formatted successfully");
+        } catch (error) {
+            toast.error("Invalid JSON");
+        }
+    };
 
 
     return (
@@ -59,47 +71,114 @@ export function CreateApiKey() {
                 <CardDescription>
                     Create a new API key to use with the Keyflow API.
                 </CardDescription>
-
             </CardHeader>
 
             <CardContent>
                 <form action={formAction}>
-                    <div className="flex flex-col lg:flex-row gap-3  items-center">
+                    <div className="flex flex-col lg:flex-row gap-3 items-center mb-4">
                         <div className="flex flex-row gap-3 h-fit w-full rounded-lg">
                             <div className="px-1 py-0.5 text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator orientation="vertical" />
                             <h1 className="text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
-
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <Label htmlFor="useExampleData" className="mr-2">Use Example Data</Label>
-                            <Switch
-                                id="use-example-data"
-                                checked={useExampleData}
-                                onCheckedChange={setUseExampleData}
-                            />
                         </div>
                     </div>
-                    {useExampleData ? (
-                        <pre className="bg-gray-100 p-4 h-[250px] overflow-y-auto rounded overflow-auto">
-                            {JSON.stringify(exampleData, null, 2)}
-                        </pre>
-                    ) : (
-                        <div className="flex flex-col space-y-1.5 w-full">
-                            <Label htmlFor="custom-data">Custom Data (JSON format)</Label>
-                            <Textarea
-                                id="custom-data"
-                                name="custom-data"
-                                value={customData}
-                                onChange={(e) => setCustomData(e.target.value)}
-                                placeholder="Enter your custom JSON data here"
-                                rows={10}
-                            />
-                            <Button size={'sm'} className="justify-start mt-5 w-fit" type="submit">Create API Key</Button>
-                        </div>
-                    )}
-
-
+                    <Tabs defaultValue="structured">
+                        <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="structured">Structured Input</TabsTrigger>
+                            <TabsTrigger value="custom">Custom Data</TabsTrigger>
+                            <TabsTrigger value="example">Example Data</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="structured">
+                            <div className="flex flex-col space-y-4 w-full">
+                                <div>
+                                    <Label htmlFor="name">Name</Label>
+                                    <Input
+                                        id="name"
+                                        name="name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter API key name"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="prefix">Prefix (optional)</Label>
+                                    <Input
+                                        id="prefix"
+                                        name="prefix"
+                                        value={prefix}
+                                        onChange={(e) => setPrefix(e.target.value)}
+                                        placeholder="key_live or key_test"
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="expiration">Expiration (optional)</Label>
+                                    <Input
+                                        id="expiration"
+                                        name="expiration"
+                                        type="datetime-local"
+                                        value={expiration}
+                                        onChange={(e) => setExpiration(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="enable-rate-limit"
+                                        checked={enableRateLimit}
+                                        onCheckedChange={setEnableRateLimit}
+                                    />
+                                    <Label htmlFor="enable-rate-limit">Enable Rate Limit</Label>
+                                </div>
+                                {enableRateLimit && (
+                                    <div>
+                                        <Label htmlFor="rate-limit">Rate Limit (requests per minute)</Label>
+                                        <Input
+                                            id="rate-limit"
+                                            name="rateLimit"
+                                            type="number"
+                                            value={rateLimit}
+                                            onChange={(e) => setRateLimit(e.target.value)}
+                                            placeholder="Enter rate limit"
+                                            min="1"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="custom">
+                            <div>
+                                <Label htmlFor="custom-data">Custom Data (JSON format)</Label>
+                                <div className="flex items-start space-x-2">
+                                    <Textarea
+                                        id="custom-data"
+                                        name="customData"
+                                        value={customData}
+                                        onChange={(e) => setCustomData(e.target.value)}
+                                        placeholder="Enter your custom JSON data here"
+                                        rows={10}
+                                        className="font-mono"
+                                    />
+                                    <Button type="button" variant="outline" size="sm" onClick={formatCustomData}>
+                                        Format
+                                    </Button>
+                                </div>
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="example">
+                            <div>
+                                <Label htmlFor="example-data">Example Data</Label>
+                                <Textarea
+                                    id="example-data"
+                                    name="exampleData"
+                                    value={JSON.stringify(exampleData, null, 2)}
+                                    readOnly
+                                    rows={15}
+                                    className="font-mono"
+                                />
+                            </div>
+                        </TabsContent>
+                    </Tabs>
+                    <Button size={'sm'} className="justify-start mt-5 w-fit" type="submit">Create API Key</Button>
                 </form>
             </CardContent>
             <CardFooter className="">

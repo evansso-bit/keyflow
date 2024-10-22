@@ -112,10 +112,12 @@ app.post("/keys/verify", async (c) => {
 			return c.json({ error: "key is required" }, 400);
 		}
 
-		// Encode the key before retrieving
-		const keyId = await redis.get<string>(
-			`lookup:${encodeURIComponent(body.key)}`
-		);
+		// Encode the key before retrieving, but don't encode the underscore
+		const encodedKey = body.key
+			.split("_")
+			.map((part) => encodeURIComponent(part))
+			.join("_");
+		const keyId = await redis.get<string>(`lookup:${encodedKey}`);
 		if (!keyId) {
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
@@ -133,31 +135,29 @@ app.post("/keys/verify", async (c) => {
 
 		if (keyData.expires && keyData.expires < Date.now()) {
 			await redis.del(`key:${keyId}`);
-			await redis.del(`lookup:${encodeURIComponent(body.key)}`);
+			await redis.del(`lookup:${encodedKey}`);
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
 
-		// Implement rate limiting logic here if needed
+		// Remove ownerId and apiId from the response
+		const { ownerId, apiId, ...responseData } = keyData;
 
 		const response: VerifyKeyResponse = {
 			valid: true,
-			ownerId: keyData.ownerId,
-			meta: keyData.meta,
-			expires: keyData.expires,
+			meta: responseData.meta,
+			expires: responseData.expires,
 		};
 
-		if (keyData.ratelimit) {
-			// Implement rate limit checking and updating here
+		if (responseData.ratelimit) {
 			response.ratelimit = {
-				limit: keyData.ratelimit.limit,
-				remaining: keyData.ratelimit.limit, // This should be updated based on actual usage
-				reset: Date.now() + keyData.ratelimit.refillInterval,
+				limit: responseData.ratelimit.limit,
+				remaining: responseData.ratelimit.limit, // This should be updated based on actual usage
+				reset: Date.now() + responseData.ratelimit.refillInterval,
 			};
 		}
 
 		return c.json(response);
 	} catch (error) {
-		// Return a JSON error response
 		return c.json({ error: `Internal Server Error: ${error}` }, 500);
 	}
 });
