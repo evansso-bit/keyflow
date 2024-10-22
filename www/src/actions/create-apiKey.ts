@@ -71,7 +71,6 @@ export async function createApiKey(prevState: any, formData: FormData) {
 			message: "API key created successfully",
 		};
 	} catch (error) {
-		console.error(error);
 		return {
 			error: "Failed to create API key",
 		};
