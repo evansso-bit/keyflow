@@ -5,13 +5,15 @@ export async function verifyApiKeyAction(prevState: any, formData: FormData) {
 	try {
 		const key = formData.get("key") as string;
 
-		console.log(key);
+		const formatedKey = JSON.stringify({
+			key: key,
+		});
+
+		console.log(formatedKey);
 
 		const response = await fetch("https://keys.mpesaflow.com/keys/verify", {
 			method: "POST",
-			body: JSON.stringify({
-				key: key,
-			}),
+			body: formatedKey,
 		}).then((res) => res.json());
 
 		console.log(response);

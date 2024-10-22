@@ -112,12 +112,8 @@ app.post("/keys/verify", async (c) => {
 			return c.json({ error: "key is required" }, 400);
 		}
 
-		// Encode the key before retrieving, but don't encode the underscore
-		const encodedKey = body.key
-			.split("_")
-			.map((part) => encodeURIComponent(part))
-			.join("_");
-		const keyId = await redis.get<string>(`lookup:${encodedKey}`);
+		// Directly use the key without encoding
+		const keyId = await redis.get<string>(`lookup:${body.key}`);
 		if (!keyId) {
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
@@ -135,7 +131,7 @@ app.post("/keys/verify", async (c) => {
 
 		if (keyData.expires && keyData.expires < Date.now()) {
 			await redis.del(`key:${keyId}`);
-			await redis.del(`lookup:${encodedKey}`);
+			await redis.del(`lookup:${body.key}`);
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
 
@@ -158,7 +154,11 @@ app.post("/keys/verify", async (c) => {
 
 		return c.json(response);
 	} catch (error) {
-		return c.json({ error: `Internal Server Error: ${error}` }, 500);
+		console.error("Error in /keys/verify:", error);
+		return c.json(
+			{ error: `Internal Server Error: ${error?.toString()}` },
+			500
+		);
 	}
 });
 
