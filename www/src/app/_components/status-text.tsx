@@ -3,7 +3,7 @@
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { AnimatedNumber } from '@/components/core/animated-number'
-import { Label } from '@/components/ui/label'
+import { Badge } from '@/components/ui/badge'
 import { useState, useEffect } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -21,13 +21,13 @@ export function StatusText() {
     const totalRequests = logs?.length
 
     return (
-        <p className="text-sm flex flex-row gap-2">
-            <Label>API Keys Generated</Label> {isLoading ? <Skeleton className="w-20 h-4" /> :
+        <p className="text-sm flex flex-row items-center text-muted-foreground gap-4">
+            <Badge>API Keys Generated</Badge> {isLoading ? <Skeleton className="w-20 h-4" /> :
                 <AnimatedNumber springOptions={{
                     bounce: 0,
                     duration: 2000,
                 }} value={totalKeys ?? 0} />}
-            <Label>API Requests</Label> {isLoading ? <Skeleton className="w-20 h-4" /> :
+            <Badge>API Requests</Badge> {isLoading ? <Skeleton className="w-20 h-4" /> :
                 <AnimatedNumber springOptions={{
                     bounce: 0,
                     duration: 2000,

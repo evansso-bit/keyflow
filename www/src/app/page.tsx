@@ -8,12 +8,12 @@ import { GithubButton } from "@/components/github button";
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-3 gap-6 flex flex-col">
-      <div className="flex flex-col items-center gap-3 text-center lg:py-20  py-10 max-w-lg w-full mx-auto">
+      <div className="flex flex-col items-center gap-3 text-center lg:py-20  py-10 max-w-lg w-full mx-auto ">
         <h1 className="text-4xl  text-center">Open Source API Key Generator</h1>
         <p className="mb-2 text-center">
           Open-source API key generation made simple. Build your own key management system without the complexity.
         </p>
-        <div className="flex lg:flex-row flex-col lg:w-full w-fit gap-2">
+        <div className="flex lg:flex-row flex-col w-full mx-auto  gap-2 mb-4">
           <GithubButton />
           <Button variant='outline'>
             <Link href="/logs">View Real-time Logs</Link>

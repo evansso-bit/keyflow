@@ -45,7 +45,7 @@ export function MainNav() {
                                 key={index}
                                 href={link.href}
                                 type='button'
-                                className={cn('px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50', pathname === link.href && "")}
+
                             >
                                 {link.label}
                             </Link>
@@ -53,7 +53,7 @@ export function MainNav() {
                     </AnimatedBackground>
                 </div>
 
-                <div className='flex flex-row gap-2 items-center'>
+                <div className='flex flex-row gap-2 lg:gap-4 items-center'>
                     <Link target='_blank' className='hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-300 lg:flex hidden' href="https://github.com/evansso-bit/keyflow">
                         <GithubIcon className="h-[1.2rem] w-[1.2rem]" />
                     </Link>
