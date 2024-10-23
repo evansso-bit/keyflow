@@ -6,7 +6,8 @@ import type {
 	CreateKeyRequest,
 } from "../types/api";
 import { Hono } from "hono";
-import { fetchWithErrorHandling } from "../config/ErrorHandlingFetch";
+import { serve } from "@upstash/workflow/hono";
+import { convexMutation } from "../config/convex";
 
 const verify = new Hono<{
 	Bindings: Env;
@@ -14,14 +15,18 @@ const verify = new Hono<{
 }>();
 
 verify.post("/verify", async (c) => {
-	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
+	const {
+		UPSTASH_REDIS_REST_TOKEN,
+		UPSTASH_REDIS_REST_URL,
+		CONVEX_URL,
+		ENVIRONMENT,
+	} = c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,
 	});
-
+	const body = await c.req.json<VerifyKeyRequest>();
 	try {
-		const body = await c.req.json<VerifyKeyRequest>();
 		console.log("Parsed request body:", body);
 
 		if (!body.key) {
@@ -33,8 +38,24 @@ verify.post("/verify", async (c) => {
 
 		console.log("Key ID:", keyId);
 
+		// Save the request in the database through the workflow
+		await convexMutation(CONVEX_URL, "apiRequests:create", {
+			method: "POST",
+			url: "/keys/verify",
+			status_code: 200,
+			request_body: {
+				...body,
+			},
+			result_body: {
+				// biome-ignore lint/complexity/noUselessTernary: <explanation>
+				valid: keyId ? true : false,
+			},
+			created_at: new Date().toISOString(),
+		});
+
 		if (keyId) {
 			return c.json<VerifyKeyResponse>({ valid: true });
+			// biome-ignore lint/style/noUselessElse: <explanation>
 		} else if (!keyId) {
 			return c.json<VerifyKeyResponse>({ valid: false });
 		}
@@ -104,36 +125,20 @@ verify.post("/verify", async (c) => {
 			};
 		}
 
-		// Save the request in the database through the workflow
-
-		await fetchWithErrorHandling(`${c.env.WORKFLOW_BASE_URL}/workflow/verify`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				method: "POST",
-				url: "/keys/verify",
-				status_code: 200, // Assuming success if it reaches here
-				body: response,
-				created_at: new Date().toISOString(),
-			}),
-		});
-
 		return c.json(response);
 	} catch (error) {
 		console.error("Error in /keys/verify:", error);
-		// Log the error request in the database through the workflow
-		await fetchWithErrorHandling(`${c.env.WORKFLOW_BASE_URL}/workflow/verify`, {
+		await convexMutation(CONVEX_URL, "apiRequests:create", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				method: "POST",
-				url: "/keys/verify",
-				status_code: 500,
-				body: {
-					error: error instanceof Error ? error.message : "Unknown error",
-				},
-				created_at: new Date().toISOString(),
-			}),
+			url: "/keys/verify",
+			status_code: 500,
+			request_body: {
+				...body,
+			},
+			result_body: {
+				error: error instanceof Error ? error.message : "Unknown error",
+			},
+			created_at: new Date().toISOString(),
 		});
 
 		return c.json(

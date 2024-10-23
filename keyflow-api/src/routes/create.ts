@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import type { CreateKeyRequest, CreateKeyResponse, Env } from "../types/api";
 import { Redis } from "@upstash/redis/cloudflare";
-import { fetchWithErrorHandling } from "../config/ErrorHandlingFetch";
+import { convexMutation } from "../config/convex";
+import { serve } from "@upstash/workflow/hono";
 
 const create = new Hono<{
 	Bindings: Env;
@@ -23,7 +24,12 @@ function generateApiKey(
 
 // Create API Key endpoint with proper JSON stringification
 create.post("/create", async (c) => {
-	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
+	const {
+		UPSTASH_REDIS_REST_TOKEN,
+		UPSTASH_REDIS_REST_URL,
+		CONVEX_URL,
+		ENVIRONMENT,
+	} = c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,
@@ -48,32 +54,35 @@ create.post("/create", async (c) => {
 		await redis.set(`lookup:${encodedKey}`, keyId);
 
 		// Save the request in the database through the workflow
-		await fetchWithErrorHandling(`${c.env.WORKFLOW_BASE_URL}/workflow/create`, {
+		await convexMutation(CONVEX_URL, "apiRequests:create", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				method: "POST",
-				url: "/keys/create",
-				status_code: 200, // Assuming success if it reaches here
-				body: { key: key, keyId: keyId },
-				created_at: new Date().toISOString(),
-			}),
+			url: "/keys/create",
+			status_code: 200,
+			request_body: {
+				...body,
+			},
+			result_body: {
+				key: key,
+				keyId: keyId,
+			},
+			created_at: new Date().toISOString(),
 		});
 
 		return c.json<CreateKeyResponse>({ key, keyId });
 	} catch (error) {
-		await fetchWithErrorHandling(`${c.env.WORKFLOW_BASE_URL}/workflow/create`, {
+		await convexMutation(CONVEX_URL, "apiRequests:create", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				method: "POST",
-				url: "/keys/create",
-				status_code: 500,
-				body: {
-					error: error instanceof Error ? error.message : "Unknown error",
-				},
-			}),
+			url: "/keys/create",
+			status_code: 500,
+			request_body: {
+				...body,
+			},
+			result_body: {
+				error: error instanceof Error ? error.message : "Unknown error",
+			},
+			created_at: new Date().toISOString(),
 		});
+
 		console.error("Error in /keys/create:", error);
 		return c.json({ error: "Internal Server Error" }, 500);
 	}
