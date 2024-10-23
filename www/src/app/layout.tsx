@@ -4,6 +4,7 @@ import "./globals.css";
 import { MainNav } from "@/components/main-nav";
 import { Toaster } from "sonner";
 import { Inter } from "next/font/google";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,9 +32,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <MainNav />
-          <Toaster />
-          {children}
+          <ConvexClientProvider>
+            <MainNav />
+            <Toaster />
+            {children}
+          </ConvexClientProvider>
         </ThemeProvider>
       </body>
     </html>
