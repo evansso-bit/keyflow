@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { useActionState, useEffect, useState } from "react";
 import { createApiKey } from "@/actions/create-apiKey";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@radix-ui/react-separator";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const exampleData = {
@@ -79,10 +79,10 @@ export function CreateApiKey() {
             <CardContent>
                 <form action={formAction}>
                     <div className="flex flex-col lg:flex-row gap-3 items-center mb-4">
-                        <div className="flex flex-row gap-3 h-fit w-full rounded-lg">
-                            <div className="px-1 py-0.5 ~text-xs/sm bg-gray-500 h-fit text-white rounded-md">POST</div>
+                        <div className="flex flex-row lg:gap-3 gap-1h-fit w-full rounded-lg">
+                            <div className="px-1 py-0.5 lg:text-sm text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator className="grow-0 shrink-0" orientation="vertical" />
-                            <h1 className="~text-sm/lg w-fit">https://keys.mpesaflow.com/keys/create</h1>
+                            <h1 className="lg:text-lg text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
                         </div>
                     </div>
                     <Tabs defaultValue="structured">

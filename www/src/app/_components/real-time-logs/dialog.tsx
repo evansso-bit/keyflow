@@ -33,9 +33,9 @@ export default function Dialog({ id }: { id: Id<"api_requests"> }) {
     return (
         <UIDialog>
             <DialogTrigger asChild>
-                <Button variant="ghost">
+                <h1 className="text-sm">
                     View API Log Details
-                </Button>
+                </h1>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

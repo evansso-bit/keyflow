@@ -41,11 +41,11 @@ export function VerifyApiKey() {
                 <form action={formAction} className="flex flex-col gap-4">
 
                     <div className="flex flex-row gap-3 h-fit w-full rounded-lg items-center">
-                        <div className="px-1 ~text-xs/sm h-fit py-0.5 bg-gray-500 text-white rounded">
+                        <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
                             POST
                         </div>
                         <Separator className="grow-0 shrink-0" orientation="vertical" />
-                        <h1 className="~text-sm/sm w-fit">
+                        <h1 className="lg:text-sm text-xs w-fit">
                             https://keys.mpesaflow.com/keys/verify
                         </h1>
                     </div>
