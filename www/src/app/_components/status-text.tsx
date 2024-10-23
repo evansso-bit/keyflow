@@ -21,7 +21,7 @@ export function StatusText() {
     const totalRequests = logs?.length
 
     return (
-        <p className="text-sm">
+        <p className="text-sm flex flex-row gap-2">
             <Label>API Keys Generated</Label> {isLoading ? <Skeleton className="w-20 h-4" /> :
                 <AnimatedNumber springOptions={{
                     bounce: 0,
