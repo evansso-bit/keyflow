@@ -71,4 +71,7 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply font-calSans;
+  }
 }

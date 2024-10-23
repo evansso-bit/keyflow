@@ -7,7 +7,7 @@ import {
     useReactTable,
     getPaginationRowModel,
 } from "@tanstack/react-table"
-import { Logs, columns } from "./columns"
+import { type Logs, columns } from "./columns"
 import { Button } from "@/components/ui/button"
 import {
     Table,

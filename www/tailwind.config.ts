@@ -15,6 +15,10 @@ const config: Config = {
 		extend: {
 			screens,
 			fontSize,
+			fontFamily: {
+				calSans: ["var(--font-cal-sans)"],
+				inter: ["var(--font-inter)"],
+			},
 			colors: {
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
