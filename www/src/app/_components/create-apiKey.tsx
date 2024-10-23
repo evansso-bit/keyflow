@@ -47,12 +47,15 @@ export function CreateApiKey() {
     const [customData, setCustomData] = useState('');
 
     useEffect(() => {
-        if (state && 'message' in state) {
+        if (!state) return
+        if ('message' in state) {
             toast.success(state.message);
         } else {
             toast.error("Failed to create API key");
         }
     }, [state]);
+
+
     const formatCustomData = () => {
         try {
             const parsed = JSON.parse(customData);
@@ -77,9 +80,9 @@ export function CreateApiKey() {
                 <form action={formAction}>
                     <div className="flex flex-col lg:flex-row gap-3 items-center mb-4">
                         <div className="flex flex-row gap-3 h-fit w-full rounded-lg">
-                            <div className="px-1 py-0.5 text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
-                            <Separator orientation="vertical" />
-                            <h1 className="text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
+                            <div className="px-1 py-0.5 ~text-xs/lg bg-gray-500 h-fit text-white rounded-md">POST</div>
+                            <Separator className="grow-0 shrink-0" orientation="vertical" />
+                            <h1 className="~text-sm/lg w-fit">https://keys.mpesaflow.com/keys/create</h1>
                         </div>
                     </div>
                     <Tabs defaultValue="structured">
@@ -183,11 +186,11 @@ export function CreateApiKey() {
             </CardContent>
             <CardFooter className="">
                 {pending ? (
-                    <pre className="bg-gray-100 p-4 rounded overflow-auto w-full text-center py-20">
+                    <pre className="p-4 rounded overflow-auto w-full text-center py-20">
                         {"Creating API Key..."}
                     </pre>
                 ) : (
-                    <pre className="px-10 border-dashed border-2 border-gray-300 rounded-lg overflow-auto w-full py-20">
+                    <pre className="px-10 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full py-20">
                         {state?.data?.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
                     </pre>
                 )}
