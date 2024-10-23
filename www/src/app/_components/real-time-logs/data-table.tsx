@@ -32,7 +32,7 @@ export default function DataTable() {
 
     const table = useReactTable({
         data: logs || [],
-        columns: columns as ColumnDef<{ id: Id<"api_requests">; method: string; statusCode: number; path: string; createdAt: number; }, any>[],
+        columns: columns as ColumnDef<Logs, any>[],
         getCoreRowModel: getCoreRowModel(),
     })
 

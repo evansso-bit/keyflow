@@ -13,12 +13,14 @@ import {
 import Dialog from "./dialog"
 import { Id } from "../../../../convex/_generated/dataModel"
 import { cn } from "@/lib/utils"
+
 export type Logs = {
     method: string;
     statusCode: string;
     path: string;
     createdAt: string;
     id: Id<"api_requests">;
+    request_body: any;
 }
 
 export const columns: ColumnDef<Logs>[] = [
