@@ -6,7 +6,8 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogClose
+    DialogClose,
+    DialogTrigger
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import {
@@ -31,6 +32,9 @@ export default function Dialog({ id }: { id: Id<"api_requests"> }) {
 
     return (
         <UIDialog>
+            <DialogTrigger asChild>
+                View API Log Details
+            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>API Log Details</DialogTitle>

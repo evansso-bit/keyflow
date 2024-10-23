@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 
 export function GithubButton() {
     const [stars, setStars] = useState(0);
-    const [requests, setRequests] = useState(0);
     useEffect(() => {
         // Fetch GitHub stars
         fetch('https://api.github.com/repos/evansso-bit/keyflow')
@@ -15,8 +14,8 @@ export function GithubButton() {
             .then(data => setStars(data.stargazers_count))
     }, [])
     return (
-        <Button variant='ghost' size='icon'>
-            <Link href="https://github.com/evansso-bit/keyflow">
+        <Button >
+            <Link className="flex flex-row gap-2" href="https://github.com/evansso-bit/keyflow">
 
                 <GithubIcon className="w-4 h-4" />
                 Star on Github

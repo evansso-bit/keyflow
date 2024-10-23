@@ -64,7 +64,9 @@ export const columns: ColumnDef<Logs>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => Dialog({ id: row.original.id })}>View API details</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Dialog id={row.original.id} />
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

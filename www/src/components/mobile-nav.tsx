@@ -20,11 +20,11 @@ export function MobileNav({ links }: { links: { label: string, href: string }[] 
                 <Drawer.Portal>
                     <Drawer.Overlay className="fixed inset-0 bg-black/40" />
                     <Drawer.Content
-                        className="right-2 top-2 bottom-2 fixed z-10 outline-none w-[310px] flex"
+                        className="right-2 top-2 bottom-2 fixed z-10 outline-none w-[310px] bg-foreground flex"
                         // The gap between the edge of the screen and the drawer is 8px in this case.
                         style={{ '--initial-transform': 'calc(100% + 8px)' } as React.CSSProperties}
                     >
-                        <div className="bg-zinc-50 h-full w-full grow p-5 flex flex-col rounded-[16px]">
+                        <div className="h-full w-full grow p-5 flex flex-col rounded-[16px]">
                             <div className="max-w-md mx-auto">
                                 <Drawer.Title className="font-medium mb-2 text-zinc-900">Menu</Drawer.Title>
                                 <div className='flex flex-col gap-2'>
@@ -33,7 +33,13 @@ export function MobileNav({ links }: { links: { label: string, href: string }[] 
                                     ))}
                                 </div>
                             </div>
+
+                            <div className='flex flex-col gap-2'>
+                                <Link href="https://github.com/evansso-bit/keyflow" target='_blank' className='px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50'>GitHub</Link>
+                                <Link href="https://x.com/evansso_bit" target='_blank' className='px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50'>Twitter</Link>
+                            </div>
                         </div>
+
                     </Drawer.Content>
                 </Drawer.Portal>
             </Drawer.Root>

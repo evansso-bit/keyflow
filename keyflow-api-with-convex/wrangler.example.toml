@@ -1,0 +1,19 @@
+name = ""
+main = "src/index.ts"
+compatibility_date = "2023-05-18"
+
+[vars]
+
+UPSTASH_REDIS_REST_URL = ""
+UPSTASH_REDIS_REST_TOKEN = ""
+WORKFLOW_BASE_URL = ""
+ENVIRONMENT = "production"
+CONVEX_URL = ""
+
+
+routes = [
+	{ pattern = "", custom_domain = true }
+]
+
+[observability]
+enabled = true

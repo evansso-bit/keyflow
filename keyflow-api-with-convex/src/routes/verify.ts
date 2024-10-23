@@ -6,7 +6,6 @@ import type {
 	CreateKeyRequest,
 } from "../types/api";
 import { Hono } from "hono";
-import { serve } from "@upstash/workflow/hono";
 import { convexMutation } from "../config/convex";
 
 const verify = new Hono<{
@@ -50,7 +49,6 @@ verify.post("/verify", async (c) => {
 				// biome-ignore lint/complexity/noUselessTernary: <explanation>
 				valid: keyId ? true : false,
 			},
-			created_at: new Date().toISOString(),
 		});
 
 		if (keyId) {
@@ -138,7 +136,6 @@ verify.post("/verify", async (c) => {
 			result_body: {
 				error: error instanceof Error ? error.message : "Unknown error",
 			},
-			created_at: new Date().toISOString(),
 		});
 
 		return c.json(

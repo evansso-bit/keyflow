@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import type { CreateKeyRequest, CreateKeyResponse, Env } from "../types/api";
 import { Redis } from "@upstash/redis/cloudflare";
 import { convexMutation } from "../config/convex";
-import { serve } from "@upstash/workflow/hono";
 
 const create = new Hono<{
 	Bindings: Env;
@@ -65,7 +64,6 @@ create.post("/create", async (c) => {
 				key: key,
 				keyId: keyId,
 			},
-			created_at: new Date().toISOString(),
 		});
 
 		return c.json<CreateKeyResponse>({ key, keyId });
@@ -80,7 +78,6 @@ create.post("/create", async (c) => {
 			result_body: {
 				error: error instanceof Error ? error.message : "Unknown error",
 			},
-			created_at: new Date().toISOString(),
 		});
 
 		console.error("Error in /keys/create:", error);
