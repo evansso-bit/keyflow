@@ -1,29 +1,26 @@
 "use server";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export async function verifyApiKeyAction(prevState: any, formData: FormData) {
-	try {
-		const key = formData.get("key") as string;
+import { actionClient } from "@/lib/safe-action";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 
+const schema = zfd.formData({
+	key: zfd.text(z.string().min(1).max(20)),
+});
+
+export const verifApikeyAction = actionClient
+	.schema(schema)
+	.stateAction(async ({ parsedInput }) => {
 		const response = await fetch("https://keys.mpesaflow.com/keys/verify", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ key }), // Send as JSON object with key property
+			body: JSON.stringify({ key: parsedInput.key }), // Send as JSON object with key property
 		}).then((res) => res.json());
-
-		console.log(response);
 
 		return {
 			data: response,
 			message: response.valid === false ? "Invalid API key" : "Valid API key",
 		};
-	} catch (error) {
-		console.log(error);
-		return {
-			valid: false,
-			error: `Error: ${error}`,
-		};
-	}
-}
+	});
