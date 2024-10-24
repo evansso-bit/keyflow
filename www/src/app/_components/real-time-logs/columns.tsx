@@ -13,6 +13,7 @@ import {
 import Dialog from "./dialog"
 import { Id } from "../../../../convex/_generated/dataModel"
 import { cn } from "@/lib/utils"
+import { formatDate } from "@/lib/dateFormatter"
 
 export type Logs = {
     method: string;
@@ -51,6 +52,9 @@ export const columns: ColumnDef<Logs>[] = [
     {
         header: "Created At",
         accessorKey: "createdAt",
+        cell: ({ row }) => {
+            return <p className="text-sm">{formatDate(row.original.createdAt)}</p>
+        }
     },
     {
         id: "actions",
