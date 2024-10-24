@@ -7,8 +7,12 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import { CalSans, inter } from "@/styles/fonts";
 import Footer from "@/components/footer";
 
+
 export const metadata: Metadata = {
-  title: "KeyFlow - Open-Source API Key Generator",
+  title: {
+    default: "KeyFlow - Open-Source API Key Generator",
+    template: "%s | KeyFlow - Open-Source API Key Generator",
+  },
   description: "Open-source API key Generator system",
   openGraph: {
     title: "Keyflow - Open-Source API Key Generator",

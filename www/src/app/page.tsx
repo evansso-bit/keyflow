@@ -4,6 +4,11 @@ import Link from "next/link";
 import { VerifyApiKey } from "./_components/verify-apiKey";
 import { StatusText } from "./_components/status-text";
 import { GithubButton } from "@/components/github-button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "KeyFlow - Open-Source API Key Generator",
+};
 
 export default function Home() {
   return (

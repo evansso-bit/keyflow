@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { CreateKeyRequest, CreateKeyResponse, Env } from "../types/api";
 import { Redis } from "@upstash/redis/cloudflare";
+import { rateLimitMiddleware } from "../lib/ratelimit";
 
 const create = new Hono<{
 	Bindings: Env;
@@ -21,7 +22,7 @@ function generateApiKey(
 }
 
 // Create API Key endpoint with proper JSON stringification
-create.post("/create", async (c) => {
+create.post("/create", rateLimitMiddleware, async (c) => {
 	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,

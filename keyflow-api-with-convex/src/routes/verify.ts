@@ -7,19 +7,16 @@ import type {
 } from "../types/api";
 import { Hono } from "hono";
 import { convexMutation } from "../config/convex";
+import { rateLimitMiddleware } from "../lib/ratelimit";
 
 const verify = new Hono<{
 	Bindings: Env;
 	Env: Env;
 }>();
 
-verify.post("/verify", async (c) => {
-	const {
-		UPSTASH_REDIS_REST_TOKEN,
-		UPSTASH_REDIS_REST_URL,
-		CONVEX_URL,
-		ENVIRONMENT,
-	} = c.env;
+verify.post("/verify", rateLimitMiddleware, async (c) => {
+	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL, CONVEX_URL } =
+		c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,

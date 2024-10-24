@@ -1,4 +1,9 @@
 import DataTable from "../_components/real-time-logs/data-table"
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Real-time Logs",
+};
 
 export default function LogsPage() {
     return (

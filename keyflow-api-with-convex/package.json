@@ -14,6 +14,7 @@
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
+		"@upstash/ratelimit": "^2.0.4",
 		"@upstash/redis": "^1.34.3",
 		"hono": "^4.6.5",
 		"wrangler": "^3.81.0"

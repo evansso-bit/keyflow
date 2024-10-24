@@ -6,13 +6,14 @@ import type {
 	CreateKeyRequest,
 } from "../types/api";
 import { Hono } from "hono";
+import { rateLimitMiddleware } from "../lib/ratelimit";
 
 const verify = new Hono<{
 	Bindings: Env;
 	Env: Env;
 }>();
 
-verify.post("/verify", async (c) => {
+verify.post("/verify", rateLimitMiddleware, async (c) => {
 	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
