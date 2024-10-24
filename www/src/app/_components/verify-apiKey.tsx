@@ -40,7 +40,7 @@ export function VerifyApiKey() {
             <CardContent>
                 <form action={execute} className="flex flex-col gap-4">
 
-                    <div className="flex flex-row lg:gap-3 gap-1w-full rounded-lg items-center">
+                    <div className="flex flex-row lg:gap-3 gap-1 w-full rounded-lg items-center">
                         <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
                             POST
                         </div>
@@ -71,13 +71,13 @@ export function VerifyApiKey() {
 
                 </form>
             </CardContent>
-            <CardFooter className="">
+            <CardFooter className="px-10 py-20 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full font-mono">
                 {isPending ? (
-                    <pre className="rounded overflow-auto w-full text-center">
+                    <p>
                         Verifying...
-                    </pre>
+                    </p>
                 ) : (
-                    <pre className="px-10 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full  py-20">
+                    <pre>
                         {result?.data?.data ? JSON.stringify(result.data.data, null, 2) : "Results will be shown here"}
                     </pre>
                 )}

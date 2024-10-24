@@ -28,7 +28,7 @@ export function MainNav() {
     return (
         <header className="bg-background border-b">
             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                <Link href="/" className="text-xl font-bold">Keyflow</Link>
+                <Link href="/" className="text-xl font-calSans">Keyflow</Link>
                 <div className='lg:flex flex-row gap-4 items-center hidden'>
                     <AnimatedBackground
                         defaultValue={pathname === links[0].href ? links[0].label : pathname === links[1].href ? links[1].label : links[0].label}
@@ -46,7 +46,7 @@ export function MainNav() {
                                 href={link.href}
                                 type='button'
                                 data-id={link.href}
-                                className={cn('px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50', pathname === link.href && "text-white")}
+                                className={cn('px-2 py-0.5  transition-colors duration-300', pathname === link.href ? 'dark:text-white text-black' : 'text-zinc-600 dark:text-zinc-400')}
                             >
                                 {link.label}
                             </Link>
@@ -58,7 +58,7 @@ export function MainNav() {
                     <Link target='_blank' className='hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-300 lg:flex hidden' href="https://github.com/evansso-bit/keyflow">
                         <GithubIcon className="h-[1.2rem] w-[1.2rem]" />
                     </Link>
-                    <Link target='_blank' className='hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-300 lg:flex hidden' href="https://x.com/evansso_bit">
+                    <Link target='_blank' className='hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-300 lg:flex hidden' href="https://x.com/evansso_">
                         <TwitterIcon className="h-[1.2rem] w-[1.2rem]" />
                     </Link>
                     <ThemeToggle />

@@ -64,13 +64,17 @@ export function CreateApiKey() {
 
             <CardContent>
                 <form action={handleSubmit}>
-                    <div className="flex flex-col lg:flex-row gap-3 items-center mb-4">
-                        <div className="flex flex-row lg:gap-3 gap-1 h-fit w-full rounded-lg">
-                            <div className="px-1 py-0.5 lg:text-sm text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
-                            <Separator className="grow-0 shrink-0" orientation="vertical" />
-                            <h1 className="lg:text-lg text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
+
+                    <div className="flex flex-row lg:gap-3 gap-1 w-full rounded-lg items-center">
+                        <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
+                            POST
                         </div>
+                        <Separator orientation="vertical" />
+                        <p className="lg:text-sm text-xs w-fit">
+                            https://keys.mpesaflow.com/keys/create
+                        </p>
                     </div>
+
                     <Tabs defaultValue="structured" onValueChange={handleTabChange}>
                         <TabsList className="grid w-full grid-cols-3">
                             <TabsTrigger value="structured">Structured Input</TabsTrigger>
@@ -89,6 +93,7 @@ export function CreateApiKey() {
                                         placeholder="Enter API key name"
                                         required
                                     />
+                                    <span className="text-red-500 text-xs">{result?.validationErrors?.name?._errors}</span>
                                 </div>
                                 <div>
                                     <Label htmlFor="prefix">Prefix (optional)</Label>
@@ -99,6 +104,7 @@ export function CreateApiKey() {
                                         onChange={(e) => setPrefix(e.target.value)}
                                         placeholder="key_live or key_test"
                                     />
+                                    <span className="text-red-500 text-xs">{result?.validationErrors?.prefix?._errors}</span>
                                 </div>
                                 <div>
                                     <Label htmlFor="expiration">Expiration (optional)</Label>
@@ -109,6 +115,7 @@ export function CreateApiKey() {
                                         value={expiration}
                                         onChange={(e) => setExpiration(e.target.value)}
                                     />
+                                    <span className="text-red-500 text-xs">{result?.validationErrors?.expiration?._errors}</span>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Switch
@@ -130,6 +137,7 @@ export function CreateApiKey() {
                                             placeholder="Enter rate limit"
                                             min="1"
                                         />
+                                        <span className="text-red-500 text-xs">{result?.validationErrors?.rateLimit?._errors}</span>
                                     </div>
                                 )}
                             </div>
@@ -150,6 +158,7 @@ export function CreateApiKey() {
                                         rows={10}
                                         className="font-mono"
                                     />
+                                    <span className="text-red-500 text-xs">{result?.validationErrors?.customData?._errors}</span>
                                     <Button type="button" variant="outline" size="sm" onClick={() => formatCustomData(customData, setCustomData, setJsonError)}>
                                         Format
                                     </Button>
@@ -175,6 +184,7 @@ export function CreateApiKey() {
                                     rows={15}
                                     className="font-mono"
                                 />
+                                <span className="text-red-500 text-xs">{result?.validationErrors?.exampleData?._errors}</span>
                             </div>
                         </TabsContent>
                     </Tabs>
@@ -188,13 +198,13 @@ export function CreateApiKey() {
                     </Button>
                 </form>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="px-10 font-mono py-20 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full ">
                 {isPending ? (
-                    <pre className="p-4 rounded overflow-auto w-full text-center py-20">
+                    <p>
                         {"Creating API Key..."}
-                    </pre>
+                    </p>
                 ) : (
-                    <pre className="px-10 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full py-20">
+                    <pre>
                         {!result?.data ? "Results will be shown here" : JSON.stringify(result.data, null, 2)}
                     </pre>
                 )}

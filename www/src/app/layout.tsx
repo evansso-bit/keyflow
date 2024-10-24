@@ -5,26 +5,26 @@ import { MainNav } from "@/components/main-nav";
 import { Toaster } from "sonner";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { CalSans, inter } from "@/styles/fonts";
-
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "KeyFlow - API Key Generator",
+  title: "KeyFlow - Open-Source API Key Generator",
   description: "Open-source API key Generator system",
   openGraph: {
-    title: "Keyflow - API Key Generator",
+    title: "Keyflow - Open-Source API Key Generator",
     description: "Open-source API key Generator system",
     images: [
       {
         url: "https://utfs.io/f/qGGrTNysMsOSwjiK6TUbfRzUZraT9OHeoNpCiPV0IcWxJL8k",
         width: 1200,
         height: 630,
-        alt: "Keyflow API Key Generator",
+        alt: "Keyflow Open-Source API Key Generator",
 
       },
     ],
   },
   twitter: {
-    title: "KeyFlow - API Key Generator",
+    title: "KeyFlow - Open-Source API Key Generator",
     description: "Open-source API key Generator system",
     card: "summary_large_image",
     images: [
@@ -65,6 +65,7 @@ export default function RootLayout({
             <MainNav />
             <Toaster richColors />
             {children}
+            <Footer />
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
