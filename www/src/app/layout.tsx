@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   },
   description: "Open-source API key Generator system",
   openGraph: {
+    siteName: "KeyFlow - Open-Source API Key Generator",
+    type: "website",
+    url: "https://keyflow.mpesaflow.com",
     title: "Keyflow - Open-Source API Key Generator",
     description: "Open-source API key Generator system",
     images: [
@@ -40,6 +43,11 @@ export const metadata: Metadata = {
       },
     ],
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  manifest: "https://keyflow.mpesaflow.com/manifest.webmanifest",
 }
 
 export default function RootLayout({
