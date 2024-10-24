@@ -76,7 +76,7 @@ export function CreateApiKey() {
                     </div>
 
                     <Tabs defaultValue="structured" onValueChange={handleTabChange}>
-                        <TabsList className="grid w-full grid-cols-3">
+                        <TabsList className="grid w-full grid-cols-3 lg:text-lg text-xs">
                             <TabsTrigger value="structured">Structured Input</TabsTrigger>
                             <TabsTrigger value="custom">Custom Data</TabsTrigger>
                             <TabsTrigger value="example">Example Data</TabsTrigger>

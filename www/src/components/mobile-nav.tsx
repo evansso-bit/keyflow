@@ -27,23 +27,23 @@ export function MobileNav({ links }: { links: { label: string, href: string }[] 
                     >
                         <div className="h-full w-full grow px-4 py-3 flex flex-col rounded-[16px]">
                             <div className="max-w-lg">
-                                <Drawer.Title className="text-xl">Menu</Drawer.Title>
+                                <Drawer.Title className="text-xl px-2 mb-5">Menu</Drawer.Title>
                                 <Drawer.Trigger asChild>
                                     <div className='flex flex-col gap-3 mb-5'>
                                         {links.map((link, index) => (
-                                            <Link key={index} href={link.href} className={cn('px-2 py-0.5 text-lg transition-colors duration-300', pathname === link.href ? 'dark:text-white text-black' : 'text-zinc-600 dark:text-zinc-400')}>{link.label}</Link>
+                                            <Link key={index} href={link.href} className={cn('px-2 py-0.5 text-lg transition-colors duration-300', pathname === link.href ? 'dark:text-white text-black' : 'text-zinc-500 dark:text-zinc-400')}>{link.label}</Link>
                                         ))}
                                     </div>
                                 </Drawer.Trigger>
 
                                 <div className='flex flex-col gap-2'>
                                     <Drawer.Trigger asChild>
-                                        <Link href="https://github.com/evansso-bit/keyflow" target='_blank' className='px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 flex flex-row items-center gap-2'>
+                                        <Link href="https://github.com/evansso-bit/keyflow" target='_blank' className='px-2 py-0.5 text-zinc-500 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 flex flex-row items-center gap-2'>
                                             GitHub <ArrowUpRight className='w-4 h-4' />
                                         </Link>
                                     </Drawer.Trigger>
                                     <Drawer.Trigger asChild>
-                                        <Link href="https://x.com/evansso_" target='_blank' className='px-2 py-0.5 text-zinc-600 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 flex flex-row items-center gap-2'>
+                                        <Link href="https://x.com/evansso_" target='_blank' className='px-2 py-0.5 text-zinc-500 transition-colors duration-300 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 flex flex-row items-center gap-2'>
                                             Twitter <ArrowUpRight className='w-4 h-4' />
                                         </Link>
                                     </Drawer.Trigger>

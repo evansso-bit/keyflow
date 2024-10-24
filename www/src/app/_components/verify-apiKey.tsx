@@ -52,7 +52,7 @@ export function VerifyApiKey() {
 
                     <div className="flex flex-col gap-2 items-start">
                         <Label htmlFor="custom-data">API Key</Label>
-                        <div className="flex flex-row gap-2 w-full items-center">
+                        <div className="flex lg:flex-row flex-col   gap-2 w-full items-center">
                             <Input
                                 id="custom-data"
                                 name="key"
