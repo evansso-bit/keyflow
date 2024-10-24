@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { CalSans, inter } from "@/styles/fonts";
 import Footer from "@/components/footer";
+import { OpenPanelComponent } from '@openpanel/nextjs';
 
 
 export const metadata: Metadata = {
@@ -76,6 +77,12 @@ export default function RootLayout({
           <ConvexClientProvider>
             <MainNav />
             <Toaster richColors />
+            <OpenPanelComponent
+              clientId="8522923c-650a-4835-a20f-43ca1821e61e"
+              trackScreenViews={true}
+              trackOutgoingLinks={true}
+              key="sec_1ebc5c449fb78bc26917"
+            />
             {children}
             <Footer />
           </ConvexClientProvider>
