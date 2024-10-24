@@ -6,66 +6,52 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner";
-import { useActionState, useEffect, useState } from "react";
-import { createApiKey } from "@/actions/create-apiKey";
+import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const exampleData = {
-    apiId: "api_123",
-    prefix: "test",
-    byteLength: 16,
-    ownerId: "user_001",
-    name: "Test Key 1",
-    meta: {
-        plan: "free",
-        createdBy: "admin"
-    },
-    expires: 1735689600000,
-    ratelimit: {
-        type: "consistent",
-        limit: 1000,
-        refillRate: 10,
-        refillInterval: 60000
-    },
-    remaining: 5000,
-    refill: {
-        amount: 5000,
-        interval: "monthly"
-    },
-    enabled: true
-};
+import { useStateAction } from "next-safe-action/stateful-hooks";
+import { createApiKeyAction } from "@/actions/create-apiKey";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { validateJson, formatCustomData } from "@/lib/validateJson";
+import { exampleData } from "@/lib/custom-data";
 
 export function CreateApiKey() {
-    const [state, formAction, pending] = useActionState(createApiKey, null);
+    const { execute, result, isPending } = useStateAction(createApiKeyAction);
     const [name, setName] = useState('');
     const [prefix, setPrefix] = useState('');
     const [expiration, setExpiration] = useState('');
     const [rateLimit, setRateLimit] = useState('');
     const [enableRateLimit, setEnableRateLimit] = useState(false);
     const [customData, setCustomData] = useState('');
+    const [currentTab, setCurrentTab] = useState('structured');
+    const [jsonError, setJsonError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!state) return
-        if ('message' in state) {
-            toast.success(state.message);
-        } else {
-            toast.error("Failed to create API key");
+        if (!result?.data) return;
+        if (result.data?.message) {
+            toast.success(result.data.message);
+        } else if (result.serverError) {
+            toast.error(result.serverError);
         }
-    }, [state]);
+    }, [result]);
 
 
-    const formatCustomData = () => {
-        try {
-            const parsed = JSON.parse(customData);
-            setCustomData(JSON.stringify(parsed, null, 2));
-            toast.success("JSON formatted successfully");
-        } catch (error) {
-            toast.error("Invalid JSON");
+
+    const handleSubmit = async (formData: FormData) => {
+        if (currentTab === 'custom' && customData.trim()) {
+            if (!validateJson(customData, setJsonError)) {
+                return; // Prevent form submission if JSON is invalid
+            }
         }
+        execute(formData);
     };
 
+    const handleTabChange = (value: string) => {
+        setCurrentTab(value);
+        setJsonError(null); // Clear any existing JSON errors when switching tabs
+    };
 
     return (
         <Card className="lg:max-w-3xl w-full h-fit mx-auto">
@@ -77,15 +63,15 @@ export function CreateApiKey() {
             </CardHeader>
 
             <CardContent>
-                <form action={formAction}>
+                <form action={handleSubmit}>
                     <div className="flex flex-col lg:flex-row gap-3 items-center mb-4">
-                        <div className="flex flex-row lg:gap-3 gap-1h-fit w-full rounded-lg">
+                        <div className="flex flex-row lg:gap-3 gap-1 h-fit w-full rounded-lg">
                             <div className="px-1 py-0.5 lg:text-sm text-xs bg-gray-500 h-fit text-white rounded-md">POST</div>
                             <Separator className="grow-0 shrink-0" orientation="vertical" />
                             <h1 className="lg:text-lg text-sm w-fit">https://keys.mpesaflow.com/keys/create</h1>
                         </div>
                     </div>
-                    <Tabs defaultValue="structured">
+                    <Tabs defaultValue="structured" onValueChange={handleTabChange}>
                         <TabsList className="grid w-full grid-cols-3">
                             <TabsTrigger value="structured">Structured Input</TabsTrigger>
                             <TabsTrigger value="custom">Custom Data</TabsTrigger>
@@ -156,15 +142,26 @@ export function CreateApiKey() {
                                         id="custom-data"
                                         name="customData"
                                         value={customData}
-                                        onChange={(e) => setCustomData(e.target.value)}
+                                        onChange={(e) => {
+                                            setCustomData(e.target.value);
+                                            validateJson(e.target.value, setJsonError);
+                                        }}
                                         placeholder="Enter your custom JSON data here"
                                         rows={10}
                                         className="font-mono"
                                     />
-                                    <Button type="button" variant="outline" size="sm" onClick={formatCustomData}>
+                                    <Button type="button" variant="outline" size="sm" onClick={() => formatCustomData(customData, setCustomData, setJsonError)}>
                                         Format
                                     </Button>
                                 </div>
+                                {jsonError && (
+                                    <Alert variant="destructive" className="mt-2">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <AlertDescription>
+                                            {jsonError}
+                                        </AlertDescription>
+                                    </Alert>
+                                )}
                             </div>
                         </TabsContent>
                         <TabsContent value="example">
@@ -181,17 +178,24 @@ export function CreateApiKey() {
                             </div>
                         </TabsContent>
                     </Tabs>
-                    <Button size={'sm'} className="justify-start mt-5 w-fit" type="submit">Create API Key</Button>
+                    <Button
+                        size="sm"
+                        className="justify-start mt-5 w-fit"
+                        type="submit"
+                        disabled={isPending || (currentTab === 'custom' && !!jsonError)}
+                    >
+                        {isPending ? "Creating..." : "Create API Key"}
+                    </Button>
                 </form>
             </CardContent>
-            <CardFooter className="">
-                {pending ? (
+            <CardFooter>
+                {isPending ? (
                     <pre className="p-4 rounded overflow-auto w-full text-center py-20">
                         {"Creating API Key..."}
                     </pre>
                 ) : (
                     <pre className="px-10 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full py-20">
-                        {state?.data?.length === 0 || !state?.data ? "Results will be shown here" : JSON.stringify(state?.data, null, 2)}
+                        {!result?.data ? "Results will be shown here" : JSON.stringify(result.data, null, 2)}
                     </pre>
                 )}
             </CardFooter>

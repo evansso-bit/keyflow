@@ -4,7 +4,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { verifApikeyAction } from "@/actions/verify-apiKey";
@@ -19,8 +18,8 @@ export function VerifyApiKey() {
 
 
     useEffect(() => {
-        if (!result) return
-        if ("message" in result) {
+        if (!result.data) return
+        if ("message" in result.data) {
             toast(result.data?.message)
         } else {
             toast.error(result.serverError)
@@ -41,14 +40,14 @@ export function VerifyApiKey() {
             <CardContent>
                 <form action={execute} className="flex flex-col gap-4">
 
-                    <div className="flex flex-row gap-3 h-fit w-full rounded-lg items-center">
+                    <div className="flex flex-row lg:gap-3 gap-1w-full rounded-lg items-center">
                         <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
                             POST
                         </div>
-                        <Separator className="grow-0 shrink-0" orientation="vertical" />
-                        <h1 className="lg:text-sm text-xs w-fit">
+                        <Separator orientation="vertical" />
+                        <p className="lg:text-sm text-xs w-fit">
                             https://keys.mpesaflow.com/keys/verify
-                        </h1>
+                        </p>
                     </div>
 
                     <div className="flex flex-col gap-2 items-start">
@@ -74,12 +73,12 @@ export function VerifyApiKey() {
             </CardContent>
             <CardFooter className="">
                 {isPending ? (
-                    <pre className="bg-gray-100 rounded overflow-auto w-full text-center">
-                        <Skeleton className="w-full h-20" />
+                    <pre className="rounded overflow-auto w-full text-center">
+                        Verifying...
                     </pre>
                 ) : (
                     <pre className="px-10 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg overflow-auto w-full  py-20">
-                        {result?.data ? JSON.stringify(result.data, null, 2) : "Results will be shown here"}
+                        {result?.data?.data ? JSON.stringify(result.data.data, null, 2) : "Results will be shown here"}
                     </pre>
                 )}
             </CardFooter>
