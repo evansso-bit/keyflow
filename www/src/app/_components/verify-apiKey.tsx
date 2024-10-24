@@ -46,7 +46,7 @@ export function VerifyApiKey() {
                         </div>
                         <Separator orientation="vertical" />
                         <p className="lg:text-sm text-xs w-fit">
-                            https://keys.mpesaflow.com/keys/verify
+                            https://keyflow-api.mpesaflow.com/keys/verify
                         </p>
                     </div>
 

@@ -71,7 +71,7 @@ export function CreateApiKey() {
                         </div>
                         <Separator orientation="vertical" />
                         <p className="lg:text-sm text-xs w-fit">
-                            https://keys.mpesaflow.com/keys/create
+                            https://keyflow-api.mpesaflow.com/keys/create
                         </p>
                     </div>
 
