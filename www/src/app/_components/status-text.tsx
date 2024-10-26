@@ -32,14 +32,14 @@ export function StatusText() {
                     <Key className="w-4 h-4" />
                     <p className="text-sm flex flex-row items-center text-muted-foreground">
                         {isLoading ? <Skeleton className="w-4 h-4" /> :
-                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalKeys ?? 0} />}
+                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalKeys ?? 0} />} {" "} keys
                     </p>
                 </div>
                 <div className="flex flex-row gap-2">
                     <Activity className="w-4 h-4" />
                     <p className="text-sm flex flex-row items-center text-muted-foreground">
                         {isLoading ? <Skeleton className="w-4 h-4" /> :
-                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalRequests ?? 0} />}
+                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalRequests ?? 0} />} {" "} requests
                     </p>
                 </div>
             </div>

@@ -75,16 +75,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConvexClientProvider>
-            <FlickeringGrid
-              className="z-0 absolute inset-0 size-full"
-              squareSize={4}
-              gridGap={6}
-              color="#6B7280"
-              maxOpacity={0.5}
-              flickerChance={0.1}
-              height={800}
-              width={800}
-            />
+
             <div className="relative z-10 flex flex-col min-h-screen">
               <MainNav />
               <Toaster richColors />
@@ -95,6 +86,16 @@ export default function RootLayout({
                 key="sec_1ebc5c449fb78bc26917"
               />
               <div className="flex-grow">
+                <FlickeringGrid
+                  className="z-0 absolute inset-0 size-full"
+                  squareSize={4}
+                  gridGap={6}
+                  color="#6B7280"
+                  maxOpacity={0.5}
+                  flickerChance={0.1}
+                  height={800}
+                  width={800}
+                />
                 {children}
               </div>
               <Footer />
