@@ -1,14 +1,13 @@
+import { zValidator } from "@hono/zod-validator";
 import { Redis } from "@upstash/redis/cloudflare";
+import { Hono } from "hono";
+import { verifyApiKeySchema } from "../config/schema-validation";
 import type {
+	CreateKeyRequest,
+	Env,
 	VerifyKeyRequest,
 	VerifyKeyResponse,
-	Env,
-	CreateKeyRequest,
 } from "../types/api";
-import { Hono } from "hono";
-import { convexMutation } from "../config/convex";
-import { verifyApiKeySchema } from "../config/schema-validation";
-import { zValidator } from "@hono/zod-validator";
 
 const verify = new Hono<{
 	Bindings: Env;
@@ -22,8 +21,7 @@ verify.post(
 		}
 	}),
 	async (c) => {
-		const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL, CONVEX_URL } =
-			c.env;
+		const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
 		const redis = new Redis({
 			url: UPSTASH_REDIS_REST_URL,
 			token: UPSTASH_REDIS_REST_TOKEN,
@@ -40,20 +38,6 @@ verify.post(
 			const keyId = await redis.get<string>(`lookup:${encodedKey}`);
 
 			console.log("Key ID:", keyId);
-
-			// Save the request in the database through the workflow
-			await convexMutation(CONVEX_URL, "apiRequests:create", {
-				method: "POST",
-				url: "/keys/verify",
-				status_code: 200,
-				request_body: {
-					...body,
-				},
-				result_body: {
-					// biome-ignore lint/complexity/noUselessTernary: <explanation>
-					valid: keyId ? true : false,
-				},
-			});
 
 			if (keyId) {
 				return c.json<VerifyKeyResponse>({ valid: true });
@@ -101,7 +85,7 @@ verify.post(
 								: "Unknown parse error",
 						valid: false,
 					},
-					500
+					500,
 				);
 			}
 
@@ -131,17 +115,6 @@ verify.post(
 			return c.json(response);
 		} catch (error) {
 			console.error("Error in /keys/verify:", error);
-			await convexMutation(CONVEX_URL, "apiRequests:create", {
-				method: "POST",
-				url: "/keys/verify",
-				status_code: 500,
-				request_body: {
-					...body,
-				},
-				result_body: {
-					error: error instanceof Error ? error.message : "Unknown error",
-				},
-			});
 
 			return c.json(
 				{
@@ -149,10 +122,10 @@ verify.post(
 					details: error instanceof Error ? error.message : "Unknown error",
 					valid: false,
 				},
-				500
+				500,
 			);
 		}
-	}
+	},
 );
 
 export default verify;

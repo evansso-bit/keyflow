@@ -1,5 +1,5 @@
 // Example data
-import { ApiKeyData } from "@/types/action-types";
+import type { ApiKeyData } from "@/types/action-types";
 
 export const exampleData: ApiKeyData = {
 	apiId: "api_123",

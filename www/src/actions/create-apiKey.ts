@@ -1,10 +1,10 @@
 "use server";
 
-import { actionClient } from "@/lib/safe-action";
+import { actionClient } from "@/config/safe-action";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import type { ApiKeyData } from "@/types/action-types";
-import { exampleData } from "@/lib/custom-data";
+import { exampleData } from "@/config/custom-data";
 
 // Validation schema
 const schema = zfd.formData({
@@ -14,6 +14,7 @@ const schema = zfd.formData({
 	prefix: zfd.text(z.string().optional()),
 	expiration: zfd.text(z.string().optional()),
 	rateLimit: zfd.text(z.string().optional()),
+	byteLength: zfd.text(z.number().optional()),
 });
 
 // Action definition
@@ -51,7 +52,7 @@ export const createApiKeyAction = actionClient.schema(schema).stateAction<{
 		};
 	}
 
-	const postData = await fetch("https://keyflow-api.mpesaflow.com/keys/create", {
+	const postData = await fetch("https://keys.mpesaflow.com/keys/create", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

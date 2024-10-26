@@ -5,7 +5,7 @@ import { GithubIcon, TwitterIcon } from 'lucide-react'
 import AnimatedBackground from '@/components/core/animated-background'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import { cn } from '@/config/utils'
 import { MobileNav } from '@/components/mobile-nav'
 import { ThemeToggle } from '@/components/theme-toggle'
 

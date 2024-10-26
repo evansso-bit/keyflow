@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function LogsPage() {
     return (
         <div className="container mx-auto lg:py-20 py-10 lg:px-0 px-4 flex flex-col gap-4">
-            <h1 className="~text-2xl/lg">Real-time Logs</h1>
+            <h1 className="lg:text-2xl text-xl">Real-time Logs</h1>
             <DataTable />
         </div>
     )

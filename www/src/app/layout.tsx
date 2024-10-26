@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/theme-provider";
-import "./globals.css";
+import { ThemeProvider } from "@/providers/theme-provider";
+import "@/styles/globals.css";
 import { MainNav } from "@/components/main-nav";
 import { Toaster } from "sonner";
-import { ConvexClientProvider } from "./ConvexClientProvider";
+import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { CalSans, inter } from "@/styles/fonts";
 import Footer from "@/components/footer";
 import { OpenPanelComponent } from '@openpanel/nextjs';

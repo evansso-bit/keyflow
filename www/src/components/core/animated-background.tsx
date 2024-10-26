@@ -1,5 +1,5 @@
 'use client';
-import { cn } from '@/lib/utils';
+import { cn } from '@/config/utils';
 import { AnimatePresence, Transition, motion } from 'framer-motion';
 import {
     Children,

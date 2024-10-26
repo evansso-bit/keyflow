@@ -1,12 +1,14 @@
 import { Hono } from "hono";
-import type { Env } from "./types/api";
+import { rateLimitMiddleware } from "./lib/ratelimit";
 import create from "./routes/create";
 import verify from "./routes/verify";
+import type { Env } from "./types/api";
 
 const app = new Hono<{
 	Bindings: Env;
-	Env: Env;
 }>().basePath("/keys");
+
+app.use("*", rateLimitMiddleware);
 
 app.route("/", create);
 app.route("/", verify);

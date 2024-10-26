@@ -1,6 +1,6 @@
 export async function fetchWithErrorHandling(
 	url: string,
-	options: RequestInit
+	options: RequestInit,
 ) {
 	const { credentials, ...safeOptions } = options;
 
@@ -33,8 +33,8 @@ export async function fetchWithErrorHandling(
 
 		throw new Error(
 			`HTTP error! status: ${response.status}, body: ${JSON.stringify(
-				parsedBody
-			)}`
+				parsedBody,
+			)}`,
 		);
 	}
 

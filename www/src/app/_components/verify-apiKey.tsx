@@ -44,7 +44,7 @@ export function VerifyApiKey() {
                         <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
                             POST
                         </div>
-                        <Separator orientation="vertical" />
+                        <Separator orientation="vertical" className="bg-black" />
                         <p className="lg:text-sm text-xs w-fit">
                             https://keyflow-api.mpesaflow.com/keys/verify
                         </p>
@@ -52,16 +52,19 @@ export function VerifyApiKey() {
 
                     <div className="flex flex-col gap-2 items-start">
                         <Label htmlFor="custom-data">API Key</Label>
-                        <div className="flex lg:flex-row flex-col   gap-2 w-full items-center">
-                            <Input
-                                id="custom-data"
-                                name="key"
-                                placeholder="Enter your API key here"
+                        <div className="flex lg:flex-row flex-col  gap-2 w-full items-start">
+                            <div className="w-full">
+                                <Input
+                                    id="custom-data"
+                                    name="key"
+                                    placeholder="Enter your API key here"
 
-                                value={key}
-                                onChange={({ target }) => setKey(target.value)}
-                            />
-                            <span className="text-red-500 text-xs">{result?.validationErrors?.key?._errors}</span>
+                                    value={key}
+                                    onChange={({ target }) => setKey(target.value)}
+                                />
+                                <span aria-live="polite" className="text-red-500 text-xs">{result?.validationErrors?.key?._errors}</span>
+                            </div>
+
                             <Button disabled={isPending || !key || key === ""} size={'sm'} className="justify-start mt-5 w-fit" type="submit">
                                 {isPending ? "Verifying..." : "Verify API Key"}
                             </Button>

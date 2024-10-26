@@ -2,7 +2,7 @@
 
 import { MenuIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { cn } from '@/config/utils'
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Drawer } from 'vaul';

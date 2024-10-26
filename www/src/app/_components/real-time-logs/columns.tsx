@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Dialog from "./dialog"
 import { Id } from "../../../../convex/_generated/dataModel"
-import { cn } from "@/lib/utils"
-import { formatDate } from "@/lib/dateFormatter"
+import { cn } from "@/config/utils"
+import { formatDate } from "@/config/dateFormatter"
 
 export type Logs = {
     method: string;

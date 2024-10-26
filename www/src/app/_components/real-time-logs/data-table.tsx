@@ -1,7 +1,7 @@
 "use client"
 
 import {
-    ColumnDef,
+    type ColumnDef,
     flexRender,
     getCoreRowModel,
     useReactTable,
@@ -19,12 +19,9 @@ import {
 } from "@/components/ui/table"
 import { api } from "../../../../convex/_generated/api"
 import { useQuery } from "convex/react"
-import { Id } from "../../../../convex/_generated/dataModel"
+import { TableSkeleton } from "@/components/skeletons/table-skeleton"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-}
+
 
 
 export default function DataTable() {
@@ -32,10 +29,13 @@ export default function DataTable() {
 
     const table = useReactTable({
         data: logs || [],
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         columns: columns as ColumnDef<Logs, any>[],
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     })
+
+    if (!logs) return <TableSkeleton rows={5} columns={4} />
 
     return (
         <div>

@@ -14,8 +14,8 @@ import { useStateAction } from "next-safe-action/stateful-hooks";
 import { createApiKeyAction } from "@/actions/create-apiKey";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { validateJson, formatCustomData } from "@/lib/validateJson";
-import { exampleData } from "@/lib/custom-data";
+import { validateJson, formatCustomData } from "@/config/validateJson";
+import { exampleData } from "@/config/custom-data";
 
 export function CreateApiKey() {
     const { execute, result, isPending } = useStateAction(createApiKeyAction);
@@ -65,7 +65,7 @@ export function CreateApiKey() {
             <CardContent>
                 <form action={handleSubmit}>
 
-                    <div className="flex flex-row lg:gap-3 gap-1 w-full rounded-lg items-center">
+                    <div className="flex flex-row lg:gap-3 gap-1 w-full rounded-lg items-center mb-4">
                         <div className="px-1 lg:text-sm text-xs bg-gray-500 h-fit py-0.5 text-white rounded">
                             POST
                         </div>
@@ -76,10 +76,16 @@ export function CreateApiKey() {
                     </div>
 
                     <Tabs defaultValue="structured" onValueChange={handleTabChange}>
-                        <TabsList className="grid w-full grid-cols-3 lg:text-lg text-xs">
-                            <TabsTrigger value="structured">Structured Input</TabsTrigger>
-                            <TabsTrigger value="custom">Custom Data</TabsTrigger>
-                            <TabsTrigger value="example">Example Data</TabsTrigger>
+                        <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="structured">
+                                <p className="lg:text-sm text-xs">Structured Input</p>
+                            </TabsTrigger>
+                            <TabsTrigger value="custom">
+                                <p className="lg:text-sm text-xs">Custom Data</p>
+                            </TabsTrigger>
+                            <TabsTrigger value="example">
+                                <p className="lg:text-sm text-xs">Example Data</p>
+                            </TabsTrigger>
                         </TabsList>
                         <TabsContent value="structured">
                             <div className="flex flex-col space-y-4 w-full">

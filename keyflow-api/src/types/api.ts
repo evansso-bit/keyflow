@@ -1,12 +1,7 @@
-import { type WorkflowBindings } from "@upstash/workflow/hono";
-
-export interface Env extends WorkflowBindings {
+export type Env = {
 	UPSTASH_REDIS_REST_URL: string;
 	UPSTASH_REDIS_REST_TOKEN: string;
-	CONVEX_URL: string;
-	ENVIRONMENT: "development" | "production";
-	WORKFLOW_BASE_URL: string;
-}
+};
 
 // Types for our API key schema
 export type CreateKeyRequest = {
@@ -14,7 +9,7 @@ export type CreateKeyRequest = {
 	prefix?: string;
 	byteLength?: number;
 	ownerId?: string;
-	name?: string;
+	name: string;
 	meta?: Record<string, unknown>;
 	expires?: number;
 	ratelimit?: {

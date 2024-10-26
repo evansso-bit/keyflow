@@ -1,9 +1,16 @@
 import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { Redis } from "@upstash/redis/cloudflare";
+import type { Context } from "hono";
+import { env } from "hono/adapter";
+import type { Env } from "../types/api";
 
 // Middleware for rate limiting
-export async function rateLimitMiddleware(c: any, next: () => Promise<void>) {
-	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = c.env;
+export async function rateLimitMiddleware(
+	c: Context,
+	next: () => Promise<void>,
+) {
+	const { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } = env<Env>(c);
+
 	const redis = new Redis({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN,

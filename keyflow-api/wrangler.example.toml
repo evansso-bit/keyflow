@@ -1,4 +1,4 @@
-name = ""
+name = "keyflow-api"
 main = "src/index.ts"
 compatibility_date = "2023-05-18"
 
@@ -6,8 +6,7 @@ compatibility_date = "2023-05-18"
 
 UPSTASH_REDIS_REST_URL = ""
 UPSTASH_REDIS_REST_TOKEN = ""
-WORKFLOW_BASE_URL = ""
-ENVIRONMENT = "production"
+
 
 
 routes = [
