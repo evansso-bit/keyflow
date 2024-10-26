@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Dialog from "./dialog"
@@ -24,8 +23,6 @@ export type Logs = {
     id: Id<"api_requests">;
     request_body: any;
 }
-
-
 
 export const columns: ColumnDef<Logs>[] = [
     {
@@ -72,9 +69,7 @@ export const columns: ColumnDef<Logs>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Dialog id={row.original.id} open={open} setOpen={setOpen} />
-                        </DropdownMenuItem>
+                        <Dialog id={row.original.id} open={open} setOpen={setOpen} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

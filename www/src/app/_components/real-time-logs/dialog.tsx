@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import {
     Dialog as UIDialog,
@@ -6,7 +8,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogClose,
     DialogTrigger
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/tabs"
 import { useQuery } from "convex/react"
 import { api } from "../../../../convex/_generated/api"
-import { Id } from "../../../../convex/_generated/dataModel"
+import type { Id } from "../../../../convex/_generated/dataModel"
 
 export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, open: boolean, setOpen: (open: boolean) => void }) {
     const selectedLog = useQuery(api.apiRequests.getById, { id })
@@ -33,10 +34,9 @@ export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, 
     return (
         <UIDialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-                <p className="text-sm cursor-pointer" onClick={() => setOpen(true)}>
+                <Button variant="ghost" className="w-full justify-start">
                     View API Log Details
-                </p>
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
@@ -45,7 +45,7 @@ export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, 
                         {selectedLog?.path} - {selectedLog?.statusCode}
                     </DialogDescription>
                 </DialogHeader>
-                <Tabs className="border-b">
+                <Tabs defaultValue="request" className="border-b">
                     <TabsList>
                         <TabsTrigger value="request">Request</TabsTrigger>
                         <TabsTrigger value="response">Response</TabsTrigger>
@@ -67,9 +67,7 @@ export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, 
                 </Tabs>
                 <DialogFooter>
                     <Button onClick={handleCopyToClipboard}>Copy Response to Clipboard</Button>
-                    <DialogClose asChild>
-                        <Button variant="ghost">Close</Button>
-                    </DialogClose>
+                    <Button variant="ghost" onClick={() => setOpen(false)}>Close</Button>
                 </DialogFooter>
             </DialogContent>
         </UIDialog>
