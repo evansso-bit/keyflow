@@ -20,7 +20,7 @@ import { useQuery } from "convex/react"
 import { api } from "../../../../convex/_generated/api"
 import { Id } from "../../../../convex/_generated/dataModel"
 
-export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, open: boolean, setOpen: (open: boolean) => void }) {
+export default function Dialog({ id, open, setOpen, closeDropdown }: { id: Id<"api_requests">, open: boolean, setOpen: (open: boolean) => void, closeDropdown: () => void }) {
     const selectedLog = useQuery(api.apiRequests.getById, { id })
 
     const handleCopyToClipboard = () => {
@@ -30,14 +30,21 @@ export default function Dialog({ id, open, setOpen }: { id: Id<"api_requests">, 
         }
     }
 
+    const handleOpenChange = (open: boolean) => {
+        setOpen(open);
+        if (!open) {
+            setOpen(false);
+        }
+    };
+
     return (
-        <UIDialog open={open} onOpenChange={setOpen}>
+        <UIDialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <p className="text-sm">
                     View API Log Details
                 </p>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>API Log Details</DialogTitle>
                     <DialogDescription>

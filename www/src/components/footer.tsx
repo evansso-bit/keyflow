@@ -3,7 +3,7 @@ import { Github, Twitter } from "lucide-react"
 
 export default function Footer() {
     return (
-        <footer className="border-t lg:mt-20 mt-10 shrink-0 grow-0">
+        <footer className="border-t lg:mt-20 mt-10 shrink-0 grow-0 bg-background">
             <div className="container flex flex-col items-center justify-between space-y-4 py-10 md:h-24 md:flex-row md:space-y-0 md:py-0 mx-auto">
                 <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">
                     <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
@@ -14,8 +14,8 @@ export default function Footer() {
                         by the MpesaFlow team.
                     </p>
                     <p className="text-center font-medium md:text-left">
-                        <span className="hidden sm:inline">Everybody can code.</span>
-                        <span className="inline sm:hidden">Code for all.</span>
+                        <span>Everybody can cook.</span>
+
                     </p>
                 </div>
                 <div className="flex items-center space-x-4">

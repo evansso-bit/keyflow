@@ -11,7 +11,7 @@ export function StatusText() {
     const [isLoading, setIsLoading] = useState(true)
 
     const keys = useQuery(api.apiRequests.getByPath, {
-        path: "/api/v1/keys"
+        path: "/keys/create"
     })
     const requests = useQuery(api.apiRequests.get)
 
