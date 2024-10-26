@@ -81,7 +81,7 @@ export default function RootLayout({
                 squareSize={4}
                 gridGap={6}
                 color="#6B7280"
-                maxOpacity={0.5}
+                maxOpacity={0.2}
                 flickerChance={0.1}
               />
             </div>
