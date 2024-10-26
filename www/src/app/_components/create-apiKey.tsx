@@ -211,7 +211,7 @@ export function CreateApiKey() {
                     </p>
                 ) : (
                     <pre>
-                        {!result?.data ? "Results will be shown here" : JSON.stringify(result.data, null, 2)}
+                        {!result?.data?.data ? "Results will be shown here" : JSON.stringify(result.data.data, null, 2)}
                     </pre>
                 )}
             </CardFooter>
