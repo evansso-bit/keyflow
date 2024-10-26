@@ -68,6 +68,26 @@ export const get = query({
 	},
 });
 
+export const getByPath = query({
+	args: {
+		path: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const data = await ctx.db
+			.query("api_requests")
+			.filter((q) => q.eq(q.field("url"), args.path))
+			.collect();
+		return data.map((item) => ({
+			id: item._id,
+			method: item.method,
+			statusCode: item.status_code,
+			path: item.url,
+			createdAt: item._creationTime,
+			request_body: item.request_body,
+		}));
+	},
+});
+
 export const getById = query({
 	args: {
 		id: v.id("api_requests"),

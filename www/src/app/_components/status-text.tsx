@@ -2,35 +2,48 @@
 
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
-import { AnimatedNumber } from '@/components/core/animated-number'
+import NumberFlow from '@number-flow/react'
 import { useState, useEffect } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Key, Activity } from 'lucide-react'
 
 export function StatusText() {
     const [isLoading, setIsLoading] = useState(true)
-    const logs = useQuery(api.apiRequests.get)
+
+    const keys = useQuery(api.apiRequests.getByPath, {
+        path: "/api/v1/keys"
+    })
+    const requests = useQuery(api.apiRequests.get)
 
     useEffect(() => {
-        if (logs) {
+        if (keys && requests) {
             setIsLoading(false)
         }
-    }, [logs])
+    }, [keys, requests])
 
-    const totalKeys = logs?.filter((log) => log.request_body.key).length
-    const totalRequests = logs?.length
+    const totalKeys = keys?.filter((log) => log.request_body.key).length
+    const totalRequests = requests?.length
 
     return (
-        <p className="text-sm flex flex-row items-center text-muted-foreground">
-            API Keys Generated- {isLoading ? <Skeleton className="w-4 h-4" /> :
-                <AnimatedNumber springOptions={{
-                    bounce: 0,
-                    duration: 2000,
-                }} value={totalKeys ?? 0} />},
-            API Requests Made - {isLoading ? <Skeleton className="w-4 h-4" /> :
-                <AnimatedNumber springOptions={{
-                    bounce: 0,
-                    duration: 2000,
-                }} value={totalRequests ?? 0} />}
-        </p>
+        <div className="flex flex-col gap-2 text-center">
+            <p>API Usage</p>
+            <div className="flex flex-row gap-5">
+                <div className="flex flex-row gap-2">
+                    <Key className="w-4 h-4" />
+                    <p className="text-sm flex flex-row items-center text-muted-foreground">
+                        {isLoading ? <Skeleton className="w-4 h-4" /> :
+                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalKeys ?? 0} />}
+                    </p>
+                </div>
+                <div className="flex flex-row gap-2">
+                    <Activity className="w-4 h-4" />
+                    <p className="text-sm flex flex-row items-center text-muted-foreground">
+                        {isLoading ? <Skeleton className="w-4 h-4" /> :
+                            <NumberFlow trend="increasing" color='#00FF00' continuous={true} format={{ notation: 'compact' }} locales="en-US" value={totalRequests ?? 0} />}
+                    </p>
+                </div>
+            </div>
+        </div>
+
     )
 }

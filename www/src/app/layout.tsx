@@ -7,7 +7,7 @@ import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { CalSans, inter } from "@/styles/fonts";
 import Footer from "@/components/footer";
 import { OpenPanelComponent } from '@openpanel/nextjs';
-
+import FlickeringGrid from "@/components/ui/flickering-grid";
 
 export const metadata: Metadata = {
   title: {
@@ -66,7 +66,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
-        className={`${inter.variable} ${CalSans.variable} font-inter antialiased w-full min-h-screen bg-background text-foreground`}
+        className={`${inter.variable} ${CalSans.variable} overflow-hidden  flex flex-col font-inter antialiased w-full min-h-screen bg-background text-foreground relative`}
       >
         <ThemeProvider
           attribute="class"
@@ -75,16 +75,30 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConvexClientProvider>
-            <MainNav />
-            <Toaster richColors />
-            <OpenPanelComponent
-              clientId="8522923c-650a-4835-a20f-43ca1821e61e"
-              trackScreenViews={true}
-              trackOutgoingLinks={true}
-              key="sec_1ebc5c449fb78bc26917"
+            <FlickeringGrid
+              className="z-0 absolute inset-0 size-full"
+              squareSize={4}
+              gridGap={6}
+              color="#6B7280"
+              maxOpacity={0.5}
+              flickerChance={0.1}
+              height={800}
+              width={800}
             />
-            {children}
-            <Footer />
+            <div className="relative z-10 flex flex-col min-h-screen">
+              <MainNav />
+              <Toaster richColors />
+              <OpenPanelComponent
+                clientId="8522923c-650a-4835-a20f-43ca1821e61e"
+                trackScreenViews={true}
+                trackOutgoingLinks={true}
+                key="sec_1ebc5c449fb78bc26917"
+              />
+              <div className="flex-grow">
+                {children}
+              </div>
+              <Footer />
+            </div>
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
