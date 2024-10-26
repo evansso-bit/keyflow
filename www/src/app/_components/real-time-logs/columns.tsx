@@ -73,7 +73,7 @@ export const columns: ColumnDef<Logs>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem>
-                            <Dialog id={row.original.id} open={open} setOpen={setOpen} closeDropdown={() => setOpen(false)} />
+                            <Dialog id={row.original.id} open={open} setOpen={setOpen} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
