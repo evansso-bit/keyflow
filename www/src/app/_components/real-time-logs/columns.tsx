@@ -14,6 +14,7 @@ import Dialog from "./dialog"
 import { Id } from "../../../../convex/_generated/dataModel"
 import { cn } from "@/config/utils"
 import { formatDate } from "@/config/dateFormatter"
+import { useState } from "react"
 
 export type Logs = {
     method: string;
@@ -23,6 +24,8 @@ export type Logs = {
     id: Id<"api_requests">;
     request_body: any;
 }
+
+
 
 export const columns: ColumnDef<Logs>[] = [
     {
@@ -59,6 +62,7 @@ export const columns: ColumnDef<Logs>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
+            const [open, setOpen] = useState(false)
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -69,7 +73,7 @@ export const columns: ColumnDef<Logs>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem>
-                            <Dialog id={row.original.id} />
+                            <Dialog id={row.original.id} open={open} setOpen={setOpen} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

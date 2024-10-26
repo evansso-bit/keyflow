@@ -66,7 +66,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
-        className={`${inter.variable} ${CalSans.variable} overflow-hidden  flex flex-col font-inter antialiased w-full min-h-screen bg-background text-foreground relative`}
+        className={`${inter.variable} ${CalSans.variable} font-inter antialiased w-full min-h-screen bg-background text-foreground relative`}
       >
         <ThemeProvider
           attribute="class"
@@ -75,7 +75,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConvexClientProvider>
-
+            <div className="fixed inset-0 z-0">
+              <FlickeringGrid
+                className="w-full h-full"
+                squareSize={4}
+                gridGap={6}
+                color="#6B7280"
+                maxOpacity={0.5}
+                flickerChance={0.1}
+              />
+            </div>
             <div className="relative z-10 flex flex-col min-h-screen">
               <MainNav />
               <Toaster richColors />
@@ -86,16 +95,6 @@ export default function RootLayout({
                 key="sec_1ebc5c449fb78bc26917"
               />
               <div className="flex-grow">
-                <FlickeringGrid
-                  className="z-50 absolute inset-0 size-full w-screen h-screen"
-                  squareSize={4}
-                  gridGap={6}
-                  color="#6B7280"
-                  maxOpacity={0.5}
-                  flickerChance={0.1}
-                  height={800}
-                  width={800}
-                />
                 {children}
               </div>
               <Footer />
