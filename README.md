@@ -1,6 +1,6 @@
-# KeyFlow: Open-Source API Key Management System
+# KeyFlow: Open-Source API Key Generator
 
-KeyFlow is an open-source API key generation and management system built with Next.js and Convex. It provides a simple and efficient way to create, verify, and manage API keys for your applications.
+KeyFlow is an open-source API key generation built with Next.js and Convex. It provides a simple and efficient way to create, verify, and manage API keys for your applications.
 
 ## Features
 
