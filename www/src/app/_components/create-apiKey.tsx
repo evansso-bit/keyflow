@@ -54,7 +54,7 @@ export function CreateApiKey() {
     };
 
     return (
-        <Card className="lg:max-w-3xl w-full h-fit mx-auto">
+        <Card className="lg:max-w-3xl w-full h-fit mx-auto bg-background">
             <CardHeader>
                 <CardTitle>Create API Key</CardTitle>
                 <CardDescription>

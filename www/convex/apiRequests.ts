@@ -84,6 +84,7 @@ export const getByPath = query({
 			path: item.url,
 			createdAt: item._creationTime,
 			request_body: item.request_body,
+			response_body: item.result_body,
 		}));
 	},
 });

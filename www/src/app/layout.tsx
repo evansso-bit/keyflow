@@ -87,7 +87,7 @@ export default function RootLayout({
               />
               <div className="flex-grow">
                 <FlickeringGrid
-                  className="z-0 absolute inset-0 size-full"
+                  className="z-50 absolute inset-0 size-full w-screen h-screen"
                   squareSize={4}
                   gridGap={6}
                   color="#6B7280"

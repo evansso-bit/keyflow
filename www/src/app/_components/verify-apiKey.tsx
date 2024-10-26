@@ -28,7 +28,7 @@ export function VerifyApiKey() {
 
 
     return (
-        <Card className="lg:max-w-3xl w-full h-fit mx-auto">
+        <Card className="lg:max-w-3xl w-full h-fit mx-auto bg-background">
             <CardHeader>
                 <CardTitle>Verify API Key</CardTitle>
                 <CardDescription>
