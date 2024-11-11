@@ -16,7 +16,7 @@ interface TableSkeletonProps {
 
 export function TableSkeleton({ rows = 5, columns = 4 }: TableSkeletonProps) {
     return (
-        <Table>
+        <Table className="border rounded-lg">
             <TableHeader>
                 <TableRow>
                     {Array.from({ length: columns }).map((_, index) => (

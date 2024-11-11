@@ -1,5 +1,9 @@
 import { Hono } from "hono";
-import type { CreateKeyRequest, CreateKeyResponse, Env } from "../types/api";
+import type {
+	CreateKeyRequest,
+	CreateKeyResponse,
+	Bindings,
+} from "../types/api";
 import { Redis } from "@upstash/redis/cloudflare";
 import { convexMutation } from "../config/convex";
 import { generateApiKey } from "../config/key-generator";
@@ -7,7 +11,7 @@ import { zValidator } from "@hono/zod-validator";
 import { createApiKeySchema } from "../config/schema-validation";
 
 const create = new Hono<{
-	Bindings: Env;
+	Bindings: Bindings;
 }>();
 
 // Create API Key endpoint with proper JSON stringification

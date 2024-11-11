@@ -6,12 +6,3 @@ compatibility_date = "2023-05-18"
 
 UPSTASH_REDIS_REST_URL = ""
 UPSTASH_REDIS_REST_TOKEN = ""
-
-
-
-routes = [
-	{ pattern = "", custom_domain = true }
-]
-
-[observability]
-enabled = true

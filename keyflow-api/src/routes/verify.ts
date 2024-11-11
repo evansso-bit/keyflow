@@ -4,13 +4,13 @@ import { Hono } from "hono";
 import { verifyApiKeySchema } from "../config/schema-validation";
 import type {
 	CreateKeyRequest,
-	Env,
+	Bindings,
 	VerifyKeyRequest,
 	VerifyKeyResponse,
 } from "../types/api";
 
 const verify = new Hono<{
-	Bindings: Env;
+	Bindings: Bindings;
 }>();
 
 verify.post(
@@ -41,7 +41,6 @@ verify.post(
 
 			if (keyId) {
 				return c.json<VerifyKeyResponse>({ valid: true });
-				// biome-ignore lint/style/noUselessElse: <explanation>
 			} else if (!keyId) {
 				return c.json<VerifyKeyResponse>({ valid: false });
 			}
@@ -85,7 +84,7 @@ verify.post(
 								: "Unknown parse error",
 						valid: false,
 					},
-					500,
+					500
 				);
 			}
 
@@ -122,10 +121,10 @@ verify.post(
 					details: error instanceof Error ? error.message : "Unknown error",
 					valid: false,
 				},
-				500,
+				500
 			);
 		}
-	},
+	}
 );
 
 export default verify;

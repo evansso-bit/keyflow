@@ -52,13 +52,16 @@ export const createApiKeyAction = actionClient.schema(schema).stateAction<{
 		};
 	}
 
-	const postData = await fetch("https://keys.mpesaflow.com/keys/create", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	}).then((res) => res.json());
+	const postData = await fetch(
+		"https://keyflow-api.mpesaflow.com/keys/create",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		}
+	).then((res) => res.json());
 
 	return {
 		data: postData,

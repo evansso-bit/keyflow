@@ -1,4 +1,4 @@
-/node_modules
-/wrangler
-/wrangler.toml
-/bun.lockb
+node_modules
+.wrangler
+wrangler.toml
+bun.lockb

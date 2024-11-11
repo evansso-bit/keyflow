@@ -2,7 +2,7 @@ import { Redis } from "@upstash/redis/cloudflare";
 import type {
 	VerifyKeyRequest,
 	VerifyKeyResponse,
-	Env,
+	Bindings,
 	CreateKeyRequest,
 } from "../types/api";
 import { Hono } from "hono";
@@ -11,7 +11,7 @@ import { verifyApiKeySchema } from "../config/schema-validation";
 import { zValidator } from "@hono/zod-validator";
 
 const verify = new Hono<{
-	Bindings: Env;
+	Bindings: Bindings;
 }>();
 
 verify.post(

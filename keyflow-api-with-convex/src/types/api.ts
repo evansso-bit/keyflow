@@ -1,4 +1,4 @@
-export type Env = {
+export type Bindings = {
 	UPSTASH_REDIS_REST_URL: string;
 	UPSTASH_REDIS_REST_TOKEN: string;
 	CONVEX_URL: string;

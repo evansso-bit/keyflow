@@ -3,10 +3,14 @@ import { Redis } from "@upstash/redis/cloudflare";
 import { Hono } from "hono";
 import { generateApiKey } from "../config/generateApiKey";
 import { createApiKeySchema } from "../config/schema-validation";
-import type { CreateKeyRequest, CreateKeyResponse, Env } from "../types/api";
+import type {
+	CreateKeyRequest,
+	CreateKeyResponse,
+	Bindings,
+} from "../types/api";
 
 const create = new Hono<{
-	Bindings: Env;
+	Bindings: Bindings;
 }>();
 
 // Create API Key endpoint with proper JSON stringification
@@ -47,7 +51,7 @@ create.post(
 			console.error("Error in /keys/create:", error);
 			return c.json({ error: "Internal Server Error" }, 500);
 		}
-	},
+	}
 );
 
 export default create;
